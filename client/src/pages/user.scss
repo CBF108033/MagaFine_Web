@@ -1,0 +1,130 @@
+.user .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 5% 7%;
+    padding-right: 0%;
+    gap: 5%;
+
+    .authInfo {
+        position: relative;
+        width: 30%;
+        background: var(--secondary-color);
+        border-radius: 0 30px 0 30px;
+        height: fit-content;
+        // position: sticky;
+        // top: 10%;
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            margin: 10%;
+            border-width: 2px 1px 0px 0px;
+            border-style: dashed;
+            border-radius: 0 30px;
+            border-color: #A1A1A1;
+            padding: 5%;
+            padding: 40px;
+            gap: 30px;
+
+            .row1 {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10%;
+                padding: 0px;
+                gap: 20px;
+
+                .photo {
+                    width: 130px;
+                    height: 130px;
+                    border-radius: 50%;
+                    background-size: cover;
+                }
+
+                .buttons {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    padding: 0px;
+                    gap: 20px;
+
+                    button {
+                        border-radius: 0px 5px 0px 5px;
+                        border-width: 0px 0px 1px 0px;
+                        border-style: solid;
+                        border-color: var(--item-color);
+                        padding: 4px 9px;
+                        background: transparent;
+                        transition: background-color 0.2s ease;
+                        font-size: 1.3em;
+                        font-weight: 600;
+                        color: var(--secondary-button-color);
+                    }
+
+                    button:hover {
+                        border-color: transparent;
+                        background: #dc7c5b;
+                        color: white;
+                    }
+                }
+            }
+
+            .name {
+                font-size: 1.3em;
+                font-weight: bold;
+                color: var(--secondary-button-color);
+            }
+
+            .description {
+                font-size: 1.3em;
+                color: var(--secondary-button-color);
+            }
+
+            .contact {
+                font-size: 1.3em;
+                color: var(--secondary-button-color);
+            }
+
+            .selfLabel {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+
+                span {
+                    font-size: 1.5em;
+                    background-color: var(--primary-button-color);
+                    color: var(--secondary-button-color);
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 1.3em;
+                    box-shadow: 2px 2px 0px 0px #a5a5a5;
+                    padding: 3px 15px;
+                    transition: .2s;
+                }
+
+                span:hover {
+                    cursor: pointer;
+                    background-color: var(--hover-color);
+                    color: white;
+                    box-shadow: 2px 2px 0px 0px #834343;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .user .wrapper {
+        .authInfo {
+            width: 100%;
+            margin-right: 10%;
+        }
+    }
+}

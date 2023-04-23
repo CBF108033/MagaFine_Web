@@ -1,0 +1,42 @@
+.footer {
+    background: var(--primary-color);
+    height: 30vh;
+    padding: 0 0px 20px;
+    margin-top: 80px;
+
+    .wrapper {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 1fr .5fr .5fr;
+        align-items: center;
+        justify-items: center;
+        gap: 5px;
+
+        .logo {
+            display: flex;
+            height: 100px;
+            font-size: 2em;
+            align-items: center;
+            font-family: 'Sacramento', cursive;
+            //font-family: 'Pacifico', cursive;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 70%;
+        }
+
+        .info {
+            ul{
+                display: flex;
+                flex-wrap: wrap;
+            }
+            ul>li {
+                display: inline;
+                display: inline;
+                padding: 0 15px;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -1,0 +1,149 @@
+$li-margin-bottom: 15px;
+$ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
+
+.navbar {
+    position: sticky;
+    top: 0px;
+    background: rgb(255, 255, 255);
+    border-bottom: 1px solid var(--item-color);
+    box-sizing: border-box;
+    height: 50px;
+    z-index: 100;
+
+    .logo img {
+        width: 50px;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .navbarContainer {
+        display: flex;
+        justify-content: space-between;
+
+        .dropdown {
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+
+            .option {
+                display: flex;
+                align-items: center;
+                position: relative;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
+
+                p {
+                    font-family: 'Kanit';
+                    transition: .2s;
+                }
+            }
+
+            .option:hover .items {
+                display: block;
+                cursor: pointer;
+            }
+
+            .option:hover>p {
+                color: var(--hover-color);
+                cursor: pointer;
+            }
+        }
+    }
+
+}
+
+.items {
+    display: none;
+    border: 1px solid var(--item-color);
+    border-top: 0;
+    position: absolute;
+    // top: 49px;
+    left: -50%;
+    width: 100px;
+    background: rgb(255, 255, 255);
+
+    ul {
+        list-style: none;
+        padding-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: calc($ul-margin-bottom-$li-margin-bottom) !important;
+    }
+
+    li {
+        font-family: 'Noto Serif TC';
+        margin-bottom: $li-margin-bottom;
+        border-bottom: 2px solid transparent;
+        box-sizing: border-box;
+        transition: .2s;
+    }
+
+    li:hover {
+        color: var(--hover-color);
+        cursor: pointer;
+    }
+
+    li::after {
+        content: '';
+        display: flex;
+        width: 0;
+        height: 1px;
+        background: var(--hover-color);
+        transition: width .3s;
+    }
+
+    li:hover::after {
+        width: 100%;
+        cursor: pointer;
+    }
+}
+
+.linkList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 0 20px;
+
+    div:hover {
+        color: var(--hover-color);
+        cursor: pointer;
+    }
+
+    img {
+        width: 15px;
+    }
+
+    .loginBT {
+        background-color: var(--primary-button-color);
+        border-radius: 50px;
+        padding: 3px 7px;
+        transition: .1s;
+    }
+
+    .loginBT:hover {
+        color: white;
+        background-color: var(--hover-color);
+        box-shadow: 2px 2px 1px 0px var(--item-color);
+        cursor: pointer;
+    }
+
+    .instagramIcon:hover {
+        content: url(https://cdn-icons-png.flaticon.com/512/1384/1384063.png);
+        cursor: pointer;
+    }
+
+    .facebookIcon:hover {
+        content: url(https://cdn-icons-png.flaticon.com/512/3128/3128304.png);
+        cursor: pointer;
+    }
+
+    .youtubeIcon:hover {
+        content: url(https://cdn-icons-png.flaticon.com/512/1384/1384060.png);
+        cursor: pointer;
+    }
+}

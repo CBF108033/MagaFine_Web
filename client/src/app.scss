@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Noto+Serif+TC:wght@200;600;900&family=Pacifico&family=Sacramento&display=swap');
+* {
+    // font-family: "Open Sans", sans-serif;
+    font-family: "Noto Serif TC";
+    margin: 0;
+    padding: 0;
+}
+div,p,span{
+    font-size: 13px;
+}
+
+:root {
+    --primary-color: #EDF0E7;
+    --secondary-color: #F6F8F0;
+    --primary-button-color: #DEE8CF;
+    --secondary-button-color: #707070;
+    --item-color: #E0E0E0;
+    --hover-color: #DF7878;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+}

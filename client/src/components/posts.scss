@@ -1,0 +1,90 @@
+.posts{
+    margin: 50px 0;
+}
+.postWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 90px;
+    justify-content: center;
+
+    .post {
+        display: flex;
+        width: 600px;
+        //background: var(--item-color);
+        gap: 20px;
+
+        .cover {
+            width: 50%;
+            height: 220px;
+            overflow: hidden;
+
+            img {
+                height: 220px;
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .info {
+            display: grid;
+            flex-direction: column;
+            width: 50%;
+            grid-template-rows: .5fr 2.5fr .5fr 2.5fr;
+            align-items: center;
+            height: 220px;
+            .type{
+                font-size: 0.7em;
+            }
+            .title {
+                font-size: 1.3em;
+                font-weight: 900;
+                border-bottom: 2px solid transparent;
+            }
+            .title:hover{
+                text-decoration: underline;
+                text-decoration-thickness: 2px;
+                text-decoration-color: var(--hover-color);
+            }
+
+            .authorNdate {
+                display: flex;
+                gap: 10px;
+                color: #a6a6a6;
+                font-style: italic;
+                font-weight: 200;
+            }
+
+            .content {
+                overflow: auto;
+                text-overflow: ellipsis;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .post {
+        width: 90% !important;
+        background: #f0f1ef;
+        flex-wrap: wrap;
+        gap: 10px !important;
+        border-radius: 10px;
+        .info{
+            width: 100%!important;
+            padding: 0 10px 10px;
+        }
+    }
+
+    .cover {
+        width: 100% !important;
+
+        img {
+            width: 100% !important;
+        }
+    }
+
+    .postWrapper {
+        // background: rgb(170, 51, 51);
+    }
+}

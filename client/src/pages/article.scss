@@ -1,0 +1,214 @@
+.article {
+    display: flex;
+    margin: 5% 0 10%;
+
+    .mainContent {
+        width: 80%;
+        margin-right: 10%;
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .title {
+                font-size: 2.8em;
+                font-weight: bold;
+                padding-bottom: 20px;
+                border-bottom: 2px dotted var(--item-color);
+            }
+
+            .subTitle {
+                margin-bottom: 20px;
+                cursor: pointer;
+            }
+
+            .content {
+                font-size: 1.5em;
+                font-weight: 600;
+                margin-bottom: 30px;
+            }
+
+            .articleInfo {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 30px;
+                gap: 3em;
+                flex-wrap: wrap;
+
+                .articleLabels {
+                    span {
+                        font-size: 1.5em;
+                        border: 1px solid black;
+                        border-radius: 5px;
+                        padding: 3px 10px;
+                        color: var(--secondary-button-color);
+                        transition: .2s;
+                    }
+
+                    span:hover {
+                        color: white;
+                        background: var(--hover-color);
+                        cursor: pointer;
+                    }
+                }
+
+                .like {
+                    font-size: 1.5em;
+                    align-items: center;
+                    display: flex;
+
+                    img {
+                        width: 25px;
+                        height: fit-content;
+                        margin-right: 10px;
+                    }
+                }
+
+                .articleLabels {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 25px;
+                }
+            }
+
+            .authInfo {
+                display: grid;
+                grid-template-columns: 1fr 3fr;
+                background: var(--secondary-color);
+                border-radius: 0 40px 0 40px;
+                padding: 40px 60px;
+                gap: 5%;
+
+                .left {
+                    display: grid;
+                    grid-template-rows: 2fr 1fr;
+                    font-size: 1.5em;
+                    gap: 25px;
+                    justify-items: center;
+                    align-items: center;
+                    color: var(--secondary-button-color);
+                    ;
+
+                    .photo {
+                        width: 130px;
+                        height: 130px;
+                        border-radius: 50%;
+                        background-size: cover;
+                        //background-size: 120% 120%;
+                        //background-position: right top;
+                    }
+                }
+
+                .right {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    gap: 30px;
+
+                    .name {
+                        font-size: 1.5em;
+                        cursor: pointer;
+                    }
+
+                    .description {
+                        font-size: 1.5em;
+                    }
+
+                    .selfLabel {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 20px;
+
+                        span {
+                            font-size: 1.5em;
+                            background-color: var(--primary-button-color);
+                            color: var(--secondary-button-color);
+                            border-radius: 10px;
+                            font-weight: 600;
+                            font-size: 1.3em;
+                            box-shadow: 2px 2px 0px 0px #a5a5a5;
+                            padding: 3px 15px;
+                            transition: .2s;
+                        }
+
+                        span:hover{
+                            cursor: pointer;
+                            background-color: var(--hover-color);
+                                color: white;
+                                box-shadow: 2px 2px 0px 0px #834343;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+.article .leftSide .container {
+    .likeBT span {
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+
+    .likeBT {
+        cursor: pointer;
+    }
+}
+
+.article {
+    .leftSide {
+        width: 20%;
+
+        .container {
+            position: fixed;
+            display: flex;
+            width: 20%;
+            align-items: flex-end;
+            justify-content: center;
+            //position: sticky;
+            height: max-content;
+            bottom: 10%;
+
+            .likeBT {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                img {
+                    width: 40px;
+                }
+            }
+        }
+
+    }
+}
+
+@media screen and (max-width:600px) {
+    .authInfo {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: 1fr auto;
+        gap: 40px;
+    }
+
+    .article .leftSide {
+        width: 0%;
+    }
+
+    .article {
+        display: flex;
+        justify-content: center;
+    }
+
+    .article .mainContent {
+        margin-right: 0%;
+    }
+
+    .article .leftSide .container {
+        bottom: 1%;
+        left: 0px;
+    }
+}

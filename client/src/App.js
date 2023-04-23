@@ -1,0 +1,25 @@
+import Home from "./pages/Home";
+import Article from "./pages/Article";
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import User from "./pages/User"
+import "./app.scss";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home/>}></Route>
+          <Route path="/article/:id" element={<Article/>}></Route>
+          <Route path="/login" element={<Login/>}></Route>
+          <Route path="/register" element={<Register/>}></Route>
+          <Route path="/user/:id" element={<User/>}></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
