@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
-import express from "express";
+import express, { request } from "express";
 import dotenv from "dotenv";
 import articlesApiRouter from "./ApiRoutes/articles.js";
 import usersApiRouter from "./ApiRoutes/users.js";
-import labelsApiRouter from "./ApiRoutes/labels.js";
+import authApiRouter from "./ApiRoutes/auth.js";
+import cookieParser from "cookie-parser"
+// import labelsApiRouter from "./ApiRoutes/labels.js";
 
 dotenv.config();
 
@@ -30,6 +32,18 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
 
+app.use(cookieParser());
+app.use(express.json());
 app.use("/api/v1/articles", articlesApiRouter);
 app.use("/api/v1/users", usersApiRouter);
-app.use("/api/v1/labels", labelsApiRouter);
+app.use("/api/v1/auth", authApiRouter);
+// app.use("/api/v1/labels", labelsApiRouter);
+
+app.use((error,req,res,next) => {
+    const errorStatus = error.status || 500;
+    const errorMessage = error.message || "Something went wrong";
+    return res.status(errorStatus).json({
+        status: errorStatus,
+        message: errorMessage
+    })
+})
