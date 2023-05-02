@@ -1,0 +1,34 @@
+.labels {
+    border-top: 1px solid var(--item-color);
+    margin-bottom: 12px;
+
+    .title {
+        text-align: left;
+        padding: 5px 0 8px;
+    }
+
+    .labelView {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        .label {
+            background: var(--item-color);
+            border-radius: 50px;
+            padding: 1px 8px;
+            color: #787878;
+            transition: .1s;
+        }
+
+        .label:hover {
+            color: white;
+            background: var(--hover-color);
+            cursor: pointer;
+        }
+    }
+}
+
+.labelsActive {
+    color: white!important;
+    background: var(--hover-color)!important;
+}

@@ -15,6 +15,18 @@ export const updateLabelExist = async (req, res, next) => {
     })
 }
 
+export const getTop10Labels = async (req, res, next) => {
+    const data = await Label.find()
+    try {
+        const labels = await Promise.all(data.map((item, i) => {
+            return { labelName: item.labelName, labelAmount: item.articles.length }
+        }))
+        res.status(200).json(labels.sort((a, b) => b.labelAmount - a.labelAmount)) //依照labelAmount排序(大到小)
+    } catch (error) {
+        next(error)
+    }
+}
+
 // export const deleteLabel = async (req, res, next) => {
 //     const articleID = req
 //     const article = await Article.findById(articleID)

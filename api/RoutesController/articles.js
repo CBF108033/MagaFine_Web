@@ -3,6 +3,9 @@ import { errorMessage } from "../errorMessage.js";
 import User from "../models/User.js";
 import { updateLabelExist } from "./labels.js";
 import Label from "../models/Label.js";
+import Column from "../models/Column.js";
+import Series from "../models/Series.js";
+
 export const createArticle = async (req, res, next) => {
     const authorID = req.params.userID;
     req.body.AuthorId = authorID;
@@ -31,8 +34,12 @@ export const getArticles = async (req, res, next) => {
 }
 
 export const getAllArticles = async (req, res, next) => {
+    const { hashtags, category, ...withquery } = req.query;//?hashtags=經典,美食餐廳&category=電影
+    const hashtagsQuery = hashtags && {hashtags:{ "$in": hashtags.split(',') }} || {};
+    const categoryQuery = category && {category:{ "$in": category.split(',') }} || {};
+    const query = { ...withquery, ...hashtagsQuery, ...categoryQuery };
     try {
-        const articles = await Article.find();
+        const articles = await Article.find(query);
         res.status(200).json(articles);
     } catch (error) {
         next(errorMessage(500, "搜尋失敗，為資料庫變動問題", error))
@@ -71,7 +78,7 @@ export const deleteAticle = async (req, res, next) => {
 
     try {
         const user = await User.findById(authorID)
-          
+
         try {
             //deleteLabel(req.params.id)//刪除label的文章id
             //刪除label的文章id
@@ -100,5 +107,19 @@ export const deleteAticle = async (req, res, next) => {
         res.status(200).json("Article has been deleted");
     } catch (error) {
         next(errorMessage(500, "刪除失敗，找不到其使用者ID", error))
+    }
+}
+
+export const getAllArticlesType = async (req, res, next) => {
+    try {
+        const allColumn = await Column.find();
+        const allSeries = await Series.find();
+        const allArticlesType = {
+            column: allColumn,
+            series: allSeries
+        }
+        res.status(200).json(allArticlesType);
+    } catch (error) {
+        next(error)
     }
 }

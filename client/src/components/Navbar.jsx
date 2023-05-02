@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './navbar.scss'
 import { Link } from "react-router-dom"
+import { LoginContext } from '../context/LoginContext.js'
+import { logout } from '../constants/actionTypes'
 
 const Navbar = () => {
     const [height, setHeight] = useState(50)
@@ -14,6 +16,11 @@ const Navbar = () => {
             window.removeEventListener('resize', () => setHeight(height));
         })
     }, [])
+
+    const { user, dispatch } = useContext(LoginContext);
+    const handleClick = (e) => {
+        dispatch({ type: logout })
+    }
     return (
         <div className='navbar' ref={ref}>
             <div className="navbarContainer">
@@ -49,7 +56,14 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="linkList">
-                    <div className='loginBT'>登入</div>
+                    <div className="photo"><img src='' alt="" /></div>
+                    {user ?
+                        <div className='logoutBT'>登出</div>
+                        :
+                        <Link to={'/login'}>
+                            <div className='loginBT'>登入</div>
+                        </Link>                        
+                    }
                     <div>聯絡我們</div>
                     <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
                     <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />

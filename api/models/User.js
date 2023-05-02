@@ -17,9 +17,11 @@ const userSchema = new mongoose.Schema({
     },
     photo:{
         type: String,
+        default: "",
     },
     description: {
         type: String,
+        default: "",
     },
     personalizedHashtags: {
         type: [String],

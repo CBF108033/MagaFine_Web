@@ -118,14 +118,38 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
         width: 15px;
     }
 
-    .loginBT {
+    .photo {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: var(--item-color);
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .photo>img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    > a {
+        text-decoration: none
+    }
+
+    .loginBT,
+    .logoutBT {
         background-color: var(--primary-button-color);
         border-radius: 50px;
         padding: 3px 7px;
         transition: .1s;
     }
 
-    .loginBT:hover {
+    .loginBT:hover,
+    .logoutBT:hover {
         color: white;
         background-color: var(--hover-color);
         box-shadow: 2px 2px 1px 0px var(--item-color);

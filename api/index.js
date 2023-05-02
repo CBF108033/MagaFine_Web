@@ -4,8 +4,10 @@ import dotenv from "dotenv";
 import articlesApiRouter from "./ApiRoutes/articles.js";
 import usersApiRouter from "./ApiRoutes/users.js";
 import authApiRouter from "./ApiRoutes/auth.js";
+import labelsApiRouter from "./ApiRoutes/labels.js";
+import columnsApiRouter from "./ApiRoutes/columns.js";
+import seriesApiRouter from "./ApiRoutes/series.js";
 import cookieParser from "cookie-parser"
-// import labelsApiRouter from "./ApiRoutes/labels.js";
 
 dotenv.config();
 
@@ -37,7 +39,9 @@ app.use(express.json());
 app.use("/api/v1/articles", articlesApiRouter);
 app.use("/api/v1/users", usersApiRouter);
 app.use("/api/v1/auth", authApiRouter);
-// app.use("/api/v1/labels", labelsApiRouter);
+app.use("/api/v1/labels", labelsApiRouter);
+app.use("/api/v1/columns", columnsApiRouter);
+app.use("/api/v1/series", seriesApiRouter);
 
 app.use((error,req,res,next) => {
     const errorStatus = error.status || 500;

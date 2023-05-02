@@ -8,7 +8,7 @@ export const register = async (req, res, next) => {
     try {
         const registerWrong = await User.findOne({ email: registerData.email }) || await User.findOne({ userName: registerData.userName });
         if (registerWrong) {
-            return next(errorMessage(400, "此帳號或信箱已被註冊"))
+            return next(errorMessage(400, "此帳號(名稱)或信箱已被註冊"))
         }
 
         const salt = bcrypt.genSaltSync(10);
@@ -25,14 +25,14 @@ export const register = async (req, res, next) => {
         const saveUser = await newUser.save();
         res.status(200).json(saveUser);
     } catch (error) {
-        next(errorMessage(500, "註冊失敗", error))
+        next(errorMessage(500, "註冊失敗，請檢查格式或有無缺漏", error))
     }
 }
 
 export const login = async (req, res, next) => {
     const loginData = req.body;
     try{
-        if(loginData.email === "" || loginData.password === ""){
+        if (loginData.account === "" || loginData.password === ""){
             return next(errorMessage(404, "請輸入帳號密碼"))
         }
         const userData = await User.findOne({ email: loginData.account }) || await User.findOne({ userName: loginData.account });
@@ -43,9 +43,10 @@ export const login = async (req, res, next) => {
 
         //產生專屬使用者的token
         const token = jwt.sign({ id: userData._id, role: userData.role }, process.env.JWT_SECRET,{ expiresIn: "1h" });
+        const { password, isAdmin, ...userDetails } = userData._doc;
         res
         .cookie('JWT_token', token, { httpOnly: true })
-        .status(200).json(`${userData.userName}登入成功`);
+        .status(200).json({ userDetails });//`${userData.userName}登入成功`
 
     }catch(error){
         next(errorMessage(500, "登入失敗", error))
