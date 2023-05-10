@@ -5,6 +5,7 @@ import Register from "./pages/Register"
 import User from "./pages/User"
 import "./app.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CategoryArticle from "./pages/CategoryArticle";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/register" element={<Register/>}></Route>
           <Route path="/user/:id" element={<User/>}></Route>
+          <Route path="/findArticle/category" element={<CategoryArticle/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

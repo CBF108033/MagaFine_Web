@@ -1,3 +1,17 @@
+.categoryArticle {
+    .category {
+        margin: 50px 10% 0 10%;
+        border-bottom: 1px dashed var(--item-color);
+
+        p {
+            font-size: 2em;
+            font-weight: 600;
+            padding-left: 5%;
+            color: #8a8a8a;
+        }
+    }
+}
+
 .posts {
     margin: 50px 0;
 }

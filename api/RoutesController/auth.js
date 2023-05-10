@@ -43,7 +43,7 @@ export const login = async (req, res, next) => {
 
         //產生專屬使用者的token
         const token = jwt.sign({ id: userData._id, role: userData.role }, process.env.JWT_SECRET,{ expiresIn: "1h" });
-        const { password, isAdmin, ...userDetails } = userData._doc;
+        const { password, role, ...userDetails } = userData._doc;
         res
         .cookie('JWT_token', token, { httpOnly: true })
         .status(200).json({ userDetails });//`${userData.userName}登入成功`

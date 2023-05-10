@@ -29,6 +29,12 @@
                 margin-bottom: 30px;
             }
 
+            .content>p {
+                font-size: .9em;
+                font-weight: 600;
+                margin-bottom: 30px;
+            }
+
             .articleInfo {
                 display: flex;
                 flex-direction: row;
@@ -134,11 +140,11 @@
                             transition: .2s;
                         }
 
-                        span:hover{
+                        span:hover {
                             cursor: pointer;
                             background-color: var(--hover-color);
-                                color: white;
-                                box-shadow: 2px 2px 0px 0px #834343;
+                            color: white;
+                            box-shadow: 2px 2px 0px 0px #834343;
                         }
                     }
                 }

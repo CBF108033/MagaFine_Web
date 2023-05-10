@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const ArticleSchema = new mongoose.Schema({
-    AuthorId:{
+    AuthorId: {
         type: String,
         default: ""
     },
@@ -23,18 +23,20 @@ const ArticleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    hearts: [{//'按讚的userId'
-        type: String
-    }],
-    hashtags: [{//'標籤#'
-        type: String
-    }],
+    hearts: {//'愛心數'
+        type: [String],
+        default: []
+    },
+    hashtags: {//'標籤#'
+        type: [String],
+        default: []
+    },
     popularity: {//'熱門文章'
         type: Boolean,
         default: false
     },
     comments: [{//'留言'
-        type: { type: String, default: NaN},
+        type: { type: String, default: NaN },
         date: { type: Date, default: Date },
         userId: { type: String, required: true },
     }],

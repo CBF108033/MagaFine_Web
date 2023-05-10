@@ -25,7 +25,8 @@
 
         .account,
         .password,
-        .login {
+        .login,
+        .noAccount {
             display: grid;
             grid-template-columns: 1fr 3fr;
             text-align: end;
@@ -60,5 +61,10 @@
         span {
             color: red;
         }
+    }
+
+    .noAccount>span{
+        text-align: left;
+        grid-column-start: 2;
     }
 }

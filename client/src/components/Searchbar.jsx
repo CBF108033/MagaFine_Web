@@ -6,7 +6,7 @@ import { OptionsContext } from '../context/OptionsContext'
 import { new_Options } from '../constants/actionTypes'
 import { useNavigate } from 'react-router-dom'
 
-const Searchbar = () => {
+const Searchbar = (props) => {
     const list = ['專欄', '系列']
     let [list2, setList2] = useState([]);// ['生活', '電影', '旅遊', '美食', '開箱']
     //可用local資料庫嘗試紀錄 減少function
@@ -20,12 +20,14 @@ const Searchbar = () => {
     const [inputText, setInputText] = useState("");
     const input = useRef(null)
     const navigate = useNavigate()
+    props.isOpen(openSearchView) //將openSearchView傳給父層，讓父層Posts判斷是否顯示遮罩
 
     const { data, isLoading, error } = useFetch('/articles/allArticlesType/all')
-    console.log(data)
+    // console.log(data)
 
     const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)
     const handleSearchBarSubmit = (e) => {
+        setOpenSearchView(false)
         dispatch({ type: new_Options, payload: { inputText: inputText, hashtag: labelSeleted, type: typeSeleted, category: categorySeleted } })
         navigate("/")
     }
@@ -71,7 +73,7 @@ const Searchbar = () => {
         <div className='searchbar'>
             <div className="searchbarContent">
                 <div className='inputText'>
-                    <input type="text" placeholder="搜尋文章..." onClick={() => setOpenSearchView(true)} />
+                    <input type="text" placeholder="搜尋文章..." onClick={() => setOpenSearchView(true)} value={inputText} />
                     {openSearchView && <div className="searchbarView">
                         <div className="searchbarViewContent">
                             <div className="closeSearchView" onClick={() => closeSearchView()}><img src="https://cdn-icons-png.flaticon.com/512/3388/3388658.png" alt="" /></div>
@@ -122,7 +124,7 @@ const Searchbar = () => {
                     </div>}
                 </div>
                 <div className='searchBT' onClick={handleSearchBarSubmit}>
-                    <img src="https://cdn-icons-png.flaticon.com/512/709/709592.png" alt="" />
+                    <img src="https://cdn-icons-png.flaticon.com/512/709/709592.png" alt="放大鏡" />
                 </div>
             </div>
 

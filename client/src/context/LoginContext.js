@@ -3,6 +3,7 @@ import { login_failure, login_success, logout, start_login } from "../constants/
 
 const INITIAL_STATE = {
     user: JSON.parse(localStorage.getItem("user")) || null,
+    // userId: JSON.parse(localStorage.getItem("userId")) || null,
     loading: false,
     error: null,
 }
@@ -12,24 +13,28 @@ const LoginReducer = (state, action) => {
         case start_login:
             return {
                 user: null,
+                // userId: null,
                 loading: true,
                 error: null
             };
         case login_success:
             return {
                 user: action.payload,
+                // userId: action.payload._id,
                 loading: false,
                 error: null
             };
         case login_failure:
             return {
                 user: null,
+                // userId: null,
                 loading: false,
                 error: action.payload
             };
         case logout:
             return {
                 user: null,
+                // userId: null,
                 loading: false,
                 error: null
             };
@@ -41,10 +46,12 @@ export const LoginContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(LoginReducer, INITIAL_STATE);
     useEffect(() => {
         localStorage.setItem("user", JSON.stringify(state.user))
+        // localStorage.setItem("userId", JSON.stringify(state.userId))
     }, [state.user])
     return (
         <LoginContext.Provider value={{
             user: state.user,
+            // userId: state.userId,
             loading: state.loading,
             error: state.error,
             dispatch

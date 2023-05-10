@@ -1,13 +1,73 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import './article.scss'
 import Footer from '../components/Footer'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useFetch from '../hooks/useFetch'
+import axios from 'axios'
+import parse from 'html-react-parser'
+import { LoginContext } from '../context/LoginContext.js'
+import { OptionsContext } from '../context/OptionsContext'
+import { new_Options } from '../constants/actionTypes'
 
 const Article = () => {
+  const locationArticleUrl = useLocation()
+  const articleId = locationArticleUrl.pathname.split("/")[2]
+  // const { data, loading, error } = useFetch(`/articles/${articleId}`)
+  const [data, setData] = useState(null)//文章資料
+  const [articleLoading, setArticleLoading] = useState(true)//文章資料載入狀態
+  const [authData, setAuthData] = useState([])
   const [isLike, setIsLike] = useState(false)
+  const { user } = useContext(LoginContext)
+  const isInitialMount = useRef(true);
+  const navigate = useNavigate()
 
-  const likeBTClick = () => {
-    setIsLike(!isLike)
+  useEffect(() => {
+    async function fetchData() {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+        console.log('first render')
+        // 初次渲染時就抓取一次資料
+        let response = await axios.get(`/articles/${articleId}`)
+        setData(response.data)
+      } else {
+        // 根據特定條件重新渲染時才抓取資料
+        let response = await axios.get(`/articles/${articleId}`)
+        setData(response.data)
+      }
+    }
+    fetchData()
+  }, [isLike])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await axios.get(`/users/find/${data.AuthorId}`)
+      setAuthData(userData.data)
+    }
+    fetchData()
+  }, [data])
+
+  const likeBTClick = async () => {
+    if (!user) return alert('請先登入')
+    else {
+      try {
+        await axios.put(`/users/like/${user._id}/${articleId}`)
+      } catch (err) {
+        console.log(err)
+      }
+      setIsLike(!isLike)
+    }
+  }
+
+  const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)
+  const linkTo = (e) => {
+    const hashtag = e.target.innerText.split('#')[1]
+    dispatch({ type: new_Options, payload: { inputText: "", hashtag: [hashtag], type: [], category: []} })
+    navigate('/')
+  }
+
+  const handleUserClick = () => {
+    navigate(`/user/${data.AuthorId}`)
   }
   return (
     <>
@@ -16,9 +76,13 @@ const Article = () => {
         <div className="leftSide">
           <div className="container">
             <div className="likeBT" onClick={() => likeBTClick()}>
-              {!isLike ? <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
-                : <img src="https://cdn-icons-png.flaticon.com/512/1550/1550594.png" alt="" />
+              {//console.log(data?.hearts)
+                data?.hearts?.includes(user?._id) ? <img src="https://cdn-icons-png.flaticon.com/512/1550/1550594.png" alt="" />
+                  : <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
               }
+              {/* {!isLike ? <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
+                : <img src="https://cdn-icons-png.flaticon.com/512/1550/1550594.png" alt="" />
+              } */}
               <span>收藏</span>
             </div>
           </div>
@@ -26,31 +90,36 @@ const Article = () => {
         </div>
         <div className="mainContent">
           <div className="wrapper">
-            <div className="title">長灘（Long Beach）5 家燈光美、氣氛佳的漂亮餐廳，其中一間「巴黎風情」滿滿！還能享用到特色甜點？</div>
-            <div className="subTitle">BARBRA W.MAR 29, 2023</div>
-            <div className="content">大家平常有去探索一下長灘地區的餐廳嗎？我個人時常在長灘附近閒晃，知道這裡漂亮的餐廳還真不少呢！所以在這裡找地方吃
-              飯的時候，也真的十分容易選擇困難症發作！今</div>
+            <div className="title">{data?.title}</div>
+            <div className="subTitle" onClick={handleUserClick}>{authData.userName}&nbsp;&nbsp;&nbsp;{data?.createdAt?.slice(0, 10)}</div>
+            <div className="content">{parse(data?.content || "")}</div>
             <div className='articleInfo'>
               <div className="like">
                 <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
-                101
+                {data?.hearts?.length}
               </div>
               <div className="articleLabels">
-                <span>#美食餐廳</span>
-                <span>#Long Beach</span>
+                {data?.length !== 0 && data?.hashtags.map((hashtag, index) => {
+                  return (
+                    <span key={index} onClick={linkTo}>#{hashtag}</span>
+                  )
+                })}
               </div>
             </div>
             <div className="authInfo">
               <div className="left">
-                <div className='photo' style={{ backgroundImage: `url("` + 'https://i.imgur.com/wcXhyMA.png' + `")` }}></div>
-                IG: barbra_0407<br />FB: 王巴拉
+                <div className='photo' style={{ backgroundImage: `url("` + (authData.photo === "" ? 'https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand' : authData.photo) + `")` }}></div>{/*'https://i.imgur.com/wcXhyMA.png'*/}
+                IG: NOBody_01<br />FB: NOBody
               </div>
               <div className="right">
-                <div className="name">BARBRA W.MAR</div>
-                <div className="description">Magazine 内容編輯，懶人代表擔當</div>
+                <div className="name" onClick={handleUserClick}>{authData.userName}</div>
+                <div className="description">{authData.description}</div>
                 <div className="selfLabel">
-                  <span>#處女座</span>
-                  <span>#潔癖達人</span>
+                  {authData.length !== 0 && authData.personalizedHashtags.map((hashtag, index) => {
+                    return (
+                      <span key={index}>#{hashtag}</span>
+                    )
+                  })}
                 </div>
               </div>
             </div>
@@ -58,7 +127,7 @@ const Article = () => {
 
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   )
 }

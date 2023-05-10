@@ -3,7 +3,7 @@ import axios from 'axios'
 import './register.scss'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -48,11 +48,33 @@ const Register = () => {
     setRegisterData(prev => ({ ...prev, [e.target.id]: e.target.value, ['personalizedHashtags']: e.target.value.split('#').slice(1) }))
   }
 
+  const [file, setFile] = useState()
+  const [fileChange, setFileChange] = useState(true)
+  const handleInputPhotos = async (e) => {
+    e.preventDefault()
+    setFile(e.target.files[0])
+    setFileChange(true)
+    const ImgData = new FormData()
+    ImgData.append("file", e.target.files[0])
+    ImgData.append("upload_preset", "sambooking")
+    // console.log(1,e.target.files[0])
+    // try {
+    //   const res = await axios.post("https://api.cloudinary.com/v1_1/dgr5mhnbn/image/upload", ImgData)
+    //   const { url } = res.data
+    //   state(prev => ({ ...prev, [e.target.id]: url }))
+    //   console.log(res)
+    // } catch (err) { }
+  }
+  useEffect(() => {
+    setFileChange(false)
+    // if (file) setRegisterData(prev => ({ ...prev, ['photo']: URL.createObjectURL(file) }))//上傳但不能用，改用別種方式cloudinary
+  }, [fileChange])
+
   return (
     <>
       <div className='register' style={{ minHeight: '100vh' }}>
         <Navbar />
-        <div className="container">
+        <div className="container" style={{ gridTemplateRows: error ? '1fr 1fr 1fr 1fr 1fr 2fr 3.5fr 2fr 1fr 1fr' : '1fr 1fr 1fr 1fr 1fr 2fr 3.5fr 2fr 1fr 1fr' }}>
           <div className="title">註冊</div>
           <div className="account">
             
@@ -80,12 +102,13 @@ const Register = () => {
           </div>
           <div className="uploadPhoto">
             <span>照片上傳:</span>
-            <button>上傳檔案</button>
-            <span>photo.png</span>
+            <a><input type="file" id='photo' onChange={handleInputPhotos}/>上傳檔案</a>
+            <span className='fileName'>{Math.min((file?.name || '預設').length,20) < 20 ? file?.name || '預設' : (file?.name || '預設').slice(0, 20)+'...'}</span>
+            <img className="" src={file ? URL.createObjectURL(file) : "	https://i.imgur.com/WeHJy5e_d.webp?maxwidth=760&fidelity=grand"} alt="" />
           </div>
           <div className="discrptionMyself">
             <span>對自己的描述:</span>
-            <textarea type="area" placeholder='喜歡跳出舒適圈的背包客..' id='description' onChange={handleChange}/>
+            <textarea type="area" style={{ height: '100px', resize: 'none' }} placeholder='喜歡跳出舒適圈的背包客..' id='description' onChange={handleChange}/>
             <p style={{ gridColumnStart: 2 }}><span className="require">*</span>50字以內</p>
           </div>
           <div className="labelMyself">
@@ -96,7 +119,10 @@ const Register = () => {
           <div className="registerPageSend">
             <button className='registerSendBT' onClick={handleClick}>送出</button>
           </div>
-          <p className="warning">{error && <span className='require'>*</span>}{error}</p>
+          <p className="warning" style={{ display: error ? 'block' : 'none' }}>{error && <span className='require'>*</span>}{error}</p>
+          <div className='haveAccount'>
+            <span className="registerPageLogin"><Link to="/login" style={{ color: '#707070', textDecoration: 'underline #707070 solid' }}>已經有帳號了嗎？</Link></span>
+          </div>
         </div>
         <div className='bottom'>
           <Footer />

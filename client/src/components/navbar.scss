@@ -136,6 +136,13 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
         object-fit: cover;
     }
 
+    .userName{
+        font-family: 'Kanit';
+        font-size: 15px;
+        color: black;
+        cursor: pointer;
+    }
+
     > a {
         text-decoration: none
     }

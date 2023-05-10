@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { LoginContext } from '../context/LoginContext'
 import { login_failure, login_success, start_login } from '../constants/actionTypes'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Login = () => {
@@ -40,7 +40,7 @@ const Login = () => {
     <>
       <div className='login' style={{ minHeight: '100vh' }}>
         <Navbar />
-        <div className="container">
+        <div className="container" style={{ gridTemplateRows: errorMessage ? '2fr 1fr 1fr 1fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr' }}>
           <div className="title">登入</div>
           <div className="account">
             <span>帳號: </span>
@@ -53,7 +53,10 @@ const Login = () => {
           <div className="login" id='loginPageLogin'>
             <button className='loginBT' id='loginBT2' onClick={handleClick}>LOGIN</button>
           </div>
-          <p className="warning">{errorMessage && <span>*</span>}{errorMessage}</p>
+          <p className="warning" style={{ display: errorMessage ? 'block' : 'none'}}>{errorMessage && <span>*</span>}{errorMessage}</p>
+          <div className="noAccount">
+            <span><Link to="/register" style={{ color: '#707070', textDecoration: 'underline #707070 solid'}}>還沒有帳號嗎?</Link></span>
+          </div>
         </div>
         <div className='bottom'>
           <Footer />

@@ -34,10 +34,11 @@ export const getArticles = async (req, res, next) => {
 }
 
 export const getAllArticles = async (req, res, next) => {
-    const { hashtags, category, ...withquery } = req.query;//?hashtags=經典,美食餐廳&category=電影
+    const { searchText, hashtags, category, ...withquery } = req.query;//?hashtags=經典,美食餐廳&category=電影
+    const searchTextQuery = searchText && { content: { $regex: searchText, $options: "i" } } || "";
     const hashtagsQuery = hashtags && {hashtags:{ "$in": hashtags.split(',') }} || {};
     const categoryQuery = category && {category:{ "$in": category.split(',') }} || {};
-    const query = { ...withquery, ...hashtagsQuery, ...categoryQuery };
+    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery };
     try {
         const articles = await Article.find(query);
         res.status(200).json(articles);

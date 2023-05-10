@@ -28,6 +28,7 @@
             background-color: var(--item-color);
             border-radius: 0 50px 50px 0;
             height: 100%;
+            cursor: pointer;
         }
 
         img {
@@ -47,6 +48,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 1; //因為有遮罩層，所以要設定z-index，不然會被遮住
 
     .searchbarViewContent {
         position: relative;
