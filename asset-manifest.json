@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/MagaFine_Web/static/css/main.2ced369a.css",
-    "main.js": "/MagaFine_Web/static/js/main.cb7ceffd.js",
+    "main.js": "/MagaFine_Web/static/js/main.4f76f943.js",
     "index.html": "/MagaFine_Web/index.html",
     "main.2ced369a.css.map": "/MagaFine_Web/static/css/main.2ced369a.css.map",
-    "main.cb7ceffd.js.map": "/MagaFine_Web/static/js/main.cb7ceffd.js.map"
+    "main.4f76f943.js.map": "/MagaFine_Web/static/js/main.4f76f943.js.map"
   },
   "entrypoints": [
     "static/css/main.2ced369a.css",
-    "static/js/main.cb7ceffd.js"
+    "static/js/main.4f76f943.js"
   ]
 }
