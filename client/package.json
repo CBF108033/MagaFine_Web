@@ -20,8 +20,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -44,8 +42,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/api/v1",
-  "devDependencies": {
-    "gh-pages": "^5.0.0"
-  }
+  "proxy": "http://localhost:5000/api/v1"
 }
