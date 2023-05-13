@@ -40,5 +40,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://wondrous-semifreddo-e19e8a.netlify.app/api/v1"
 }
