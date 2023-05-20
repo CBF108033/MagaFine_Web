@@ -73,7 +73,7 @@ const Navbar = () => {
                         </div>
                     </div>
                     <div className="option">
-                        <p>系列</p><img src="https://cdn-icons-png.flaticon.com/512/9497/9497400.png" alt="" />
+                        <p>系列</p><img src="https://cdn-icons-png.flaticon.com/512/9497/9497400.png" alt="down" />
                         <div className="items" style={{ top: +`${height - 1}` + 'px' }}>
                             <ul>
                                 <li onClick={e => linkTo(e,'疑難雜症')}>疑難雜症</li>

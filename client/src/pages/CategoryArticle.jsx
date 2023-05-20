@@ -50,7 +50,7 @@ const CategoryArticle = () => {
                             {data.length != 0 ?
                                 loading || authLoading ? <Skeleton type="postSkeleton" length={4} /> : data.map((item, index) =>
                                     <div className="post" key={index}>
-                                        <div className="cover"><img src="https://images.unsplash.com/photo-1681397016161-fcdcaf7c2df6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80" /></div>
+                                        <div className="cover"><img src={item.cover} /></div>
                                         <div className="info">
                                             <div className="type">{item.category}</div>
                                             <Link to={`/article/${item._id}`}>
