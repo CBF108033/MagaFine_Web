@@ -13,4 +13,7 @@ a blogger with fashion magazine style website.
 - ### RESTful API
   在Web Service中使用REST概念實作出來的API簡稱為RESTful API，REST （Representational State Transfer）意思是「表現層狀態轉換」，一種設計風格，使用HTTP的協定完整定義Web Service在HTTP Request的各種流程如CRUD行為。
 ## 介面介紹
+<div align=center>
+  <img alt="cover" src="./images/首頁.png" width=27%>
+</div>
 ## 參考資源
