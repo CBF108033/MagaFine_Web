@@ -1,4 +1,4 @@
-# MagaFine_Web
+# MagaFine_Web📰
 a blogger with fashion magazine style website.
 
 【MagaFine】定位為時尚雜誌風格的網頁，具備文章搜尋、標籤查詢、使用者註冊登入、文章按讚功能。
