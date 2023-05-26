@@ -27,13 +27,22 @@
                 font-size: 1.5em;
                 font-weight: 600;
                 margin-bottom: 30px;
+
+                p {
+                    font-size: .9em;
+                    font-weight: 600;
+                    margin-bottom: 30px;
+                }
+                img{
+                    width: 80%;
+                }
             }
 
-            .content>p {
-                font-size: .9em;
-                font-weight: 600;
-                margin-bottom: 30px;
-            }
+            // .content>p {
+            //     font-size: .9em;
+            //     font-weight: 600;
+            //     margin-bottom: 30px;
+            // }
 
             .articleInfo {
                 display: flex;

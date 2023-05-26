@@ -83,7 +83,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="linkList">
-                    <div className="photo"> <img src={user ? data.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
+                    <div className="photo"> <img src={user ? user.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
                     <div className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</div>
                     {user ?
                         <Link to={'/'}>
