@@ -9,6 +9,7 @@ import axios from 'axios'
 
 const Login = () => {
   const registerSuccess = useLocation()//接我們register navgate過來的res
+  // console.log(registerSuccess?.state||"No");
   const navigate = useNavigate()
   const { loading, error, dispatch } = useContext(LoginContext)
   const [loginData, setLoginData] = useState({
@@ -29,7 +30,7 @@ const Login = () => {
       const res = await axios.post("/auth/login", loginData)
       dispatch({ type: login_success, payload: res.data.userDetails })
       //console.log(res)
-      navigate("/")
+      navigate(registerSuccess?.state?.from||"/")
     } catch (error) {
       setErrorMessage(error.response.data.message)
       dispatch({ type: login_failure, payload: error.response.data })

@@ -40,7 +40,7 @@ export const getAllArticles = async (req, res, next) => {
     const categoryQuery = category && {category:{ "$in": category.split(',') }} || {};
     const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery };
     try {
-        const articles = await Article.find(query);
+        const articles = await Article.find(query).sort({ createdAt: -1 });
         res.status(200).json(articles);
     } catch (error) {
         next(errorMessage(500, "搜尋失敗，為資料庫變動問題", error))

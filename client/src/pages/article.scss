@@ -20,7 +20,34 @@
 
             .subTitle {
                 margin-bottom: 20px;
-                cursor: pointer;
+
+                .subTitleName {
+                    cursor: pointer;
+
+                }
+            }
+
+            /*編輯器呈現在文章頁面上的縮排設定*/
+            .ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
+                padding-left: 3.5em;
+            }
+
+            .ql-editor li.ql-indent-2:not(.ql-direction-rtl) {
+                padding-left: 5.5em;
+            }
+
+            .ql-editor li.ql-indent-3:not(.ql-direction-rtl) {
+                padding-left: 7.5em;
+            }
+
+            .article .mainContent .wrapper .ql-editor .ql-indent-1:not(.ql-direction-rtl) {
+                padding-left: 1.5em;
+            }
+
+            .ql-editor li:not(.ql-direction-rtl)::before {
+                margin-left: -2em;
+                margin-right: 0.8em;
+                text-align: left;
             }
 
             .content {
@@ -28,13 +55,38 @@
                 font-weight: 600;
                 margin-bottom: 30px;
 
+                pre.ql-syntax {
+                    background-color: #23241f;
+                    color: #f8f8f2;
+                    overflow: visible;
+                    border-radius: 3px;
+                    white-space: pre-wrap;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                    padding: 5px 10px;
+                }
+
+                ol,
+                ul {
+                    padding-left: 0em;
+                }
+
+                blockquote {
+                    border-left: 5px solid #90b9bb;
+                    margin-bottom: 0.8em;
+                    margin-top: 0.8em;
+                    padding-left: 16px;
+                }
+
                 p {
                     font-size: .9em;
                     font-weight: 600;
                     margin-bottom: 30px;
                 }
-                img{
-                    width: 80%;
+
+                img {
+                    min-width: 50%;
+                    max-width: 80%;
                 }
             }
 
@@ -98,7 +150,6 @@
                 .left {
                     display: grid;
                     grid-template-rows: 2fr 1fr;
-                    font-size: 1.5em;
                     gap: 25px;
                     justify-items: center;
                     align-items: center;
@@ -112,6 +163,9 @@
                         background-size: cover;
                         //background-size: 120% 120%;
                         //background-position: right top;
+                    }
+                    .contact{
+                        font-size: 1.3em;
                     }
                 }
 

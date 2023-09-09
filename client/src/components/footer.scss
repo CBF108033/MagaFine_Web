@@ -2,7 +2,7 @@
     background: var(--primary-color);
     height: 30vh;
     padding: 0 0px 20px;
-    margin-top: 80px;
+    // margin-top: 80px;
 
     .wrapper {
         height: 100%;
@@ -27,16 +27,24 @@
         }
 
         .info {
-            ul{
+            ul {
+                list-style: none;
                 display: flex;
                 flex-wrap: wrap;
             }
-            ul>li {
-                display: inline;
-                display: inline;
-                padding: 0 15px;
-                cursor: pointer;
+
+            a {
+                text-decoration: none;
+
+                li {
+                    color: black;
+                    display: inline;
+                    display: inline;
+                    padding: 0 15px;
+                    cursor: pointer;
+                }
             }
         }
+
     }
 }

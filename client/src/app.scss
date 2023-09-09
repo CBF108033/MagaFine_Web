@@ -4,6 +4,7 @@
     font-family: "Noto Serif TC";
     margin: 0;
     padding: 0;
+    // box-sizing: border-box;
 }
 div,p,span{
     font-size: 14px;
@@ -20,4 +21,15 @@ div,p,span{
 
 textarea:focus, input:focus {
     outline: none;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+    pointer-events: none;
+}
+.notAllowed{
+    cursor: not-allowed;
 }

@@ -11,7 +11,7 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
     z-index: 100;
 
     .logo img {
-        width: 50px;
+        width: 65px;
         padding: 5px;
         cursor: pointer;
     }
@@ -19,6 +19,7 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
     .navbarContainer {
         display: flex;
         justify-content: space-between;
+        height: 100%;
 
         .dropdown {
             display: flex;
@@ -136,14 +137,14 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
         object-fit: cover;
     }
 
-    .userName{
+    .userName {
         font-family: 'Kanit';
         font-size: 15px;
         color: black;
         cursor: pointer;
     }
 
-    > a {
+    >a {
         text-decoration: none
     }
 
@@ -153,6 +154,7 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
         border-radius: 50px;
         padding: 3px 7px;
         transition: .1s;
+        color: var(--secondary-button-color);
     }
 
     .loginBT:hover,
@@ -176,5 +178,92 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
     .youtubeIcon:hover {
         content: url(https://cdn-icons-png.flaticon.com/512/1384/1384060.png);
         cursor: pointer;
+    }
+
+}
+
+.navbar-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1.3rem;
+    font-size: 1.5rem;
+    display: none;
+}
+
+.linkList.mobileActive {
+    display: flex;
+}
+
+.linkList.mobileActive>* {
+    border-bottom: 2px dashed #ffffff;
+    padding-bottom: 20px;
+    width: 50%;
+}
+
+.pc {
+    display: flex;
+}
+
+.mobile {
+    display: none;
+}
+
+.linkList.mobileActive {
+    position: absolute;
+    top: 50px;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.mobileNavbar {
+    display: none;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    background-color: var(--primary-color);
+    transition: all 0.3s cubic-bezier(0.05, -0.03, 0.58, 1) 0s;
+}
+
+.mobileNavbar .account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+@media screen and (max-width: 765px) {
+    .mobile {
+        display: flex;
+        align-items: center;
+    }
+
+    .pc {
+        display: none;
+    }
+
+    .linkList {
+        gap: 20px;
+    }
+
+    .linkList.mobileActive {
+        display: flex;
+        align-items: center;
+    }
+
+    .mobileNavbar {
+        display: block;
+    }
+
+    .contactListMobile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+        padding: 0 20px;
+        margin-top: 10px;
     }
 }

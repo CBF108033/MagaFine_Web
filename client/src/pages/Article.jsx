@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import './article.scss'
+import "react-quill/dist/quill.snow.css";
 import Footer from '../components/Footer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
@@ -26,7 +27,7 @@ const Article = () => {
     async function fetchData() {
       if (isInitialMount.current) {
         isInitialMount.current = false;
-        console.log('first render')
+        // console.log('first render')
         // 初次渲染時就抓取一次資料
         let response = await axios.get(`/articles/${articleId}`)
         setData(response.data)
@@ -62,7 +63,7 @@ const Article = () => {
   const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)
   const linkTo = (e) => {
     const hashtag = e.target.innerText.split('#')[1]
-    dispatch({ type: new_Options, payload: { inputText: "", hashtag: [hashtag], type: [], category: []} })
+    dispatch({ type: new_Options, payload: { inputText: "", hashtag: [hashtag], type: [], category: [] } })
     navigate('/')
   }
 
@@ -91,8 +92,11 @@ const Article = () => {
         <div className="mainContent">
           <div className="wrapper">
             <div className="title">{data?.title}</div>
-            <div className="subTitle" onClick={handleUserClick}>{authData.userName}&nbsp;&nbsp;&nbsp;{data?.createdAt?.slice(0, 10)}</div>
-            <div className="content">{parse(data?.content || "")}</div>
+            <div className="subTitle">
+              <span className='subTitleName' onClick={handleUserClick}>{authData.userName}&nbsp;&nbsp;&nbsp;</span>
+              <span className='subTitleDate'>{data?.createdAt?.slice(0, 10)}</span>
+            </div>
+            <div className="content ql-editor">{parse(data?.content || "")}</div>
             <div className='articleInfo'>
               <div className="like">
                 <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
@@ -109,7 +113,7 @@ const Article = () => {
             <div className="authInfo">
               <div className="left">
                 <div className='photo' style={{ backgroundImage: `url("` + (authData.photo === "" ? 'https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand' : authData.photo) + `")` }}></div>{/*'https://i.imgur.com/wcXhyMA.png'*/}
-                IG: NOBody_01<br />FB: NOBody
+                <div className='contact'>IG: giraffe_71_cy <br />FB: UNKNOW</div>
               </div>
               <div className="right">
                 <div className="name" onClick={handleUserClick}>{authData.userName}</div>

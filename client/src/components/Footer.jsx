@@ -11,10 +11,8 @@ const Footer = () => {
         </Link>
         <div className="info">
           <ul>
-            <li>關注我們</li>
-            <li>關於我們</li>
-            <li>訂閱我們</li>
-            <li>聯絡我們</li>
+            <Link to="https://sarahah.top/u/giraffe71?Lang=en"><li>匿名留言</li></Link>
+            <Link to="https://instagram.com/giraffe_71_cy?igshid=ZGUzMzM3NWJiOQ=="><li>聯絡開發者</li></Link>
           </ul>
         </div>
         <div className="tag">© MagaFine Limited</div>

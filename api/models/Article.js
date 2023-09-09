@@ -18,7 +18,8 @@ const ArticleSchema = new mongoose.Schema({
         required: true
     },
     Images: {
-        type: String,
+        data: Buffer,
+        contentType: String
     },
     type: {// '系列、專欄'
         type: String,

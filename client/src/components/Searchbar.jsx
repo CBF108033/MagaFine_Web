@@ -27,6 +27,7 @@ const Searchbar = (props) => {
 
     const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)
     const handleSearchBarSubmit = (e) => {
+        console.log(typeSeleted, categorySeleted, labelSeleted)
         setOpenSearchView(false)
         dispatch({ type: new_Options, payload: { inputText: inputText, hashtag: labelSeleted, type: typeSeleted, category: categorySeleted } })
         navigate("/")
@@ -34,7 +35,7 @@ const Searchbar = (props) => {
 
     useEffect(() => {
         setTypeSeleted(typeSeleted);
-        console.log(typeSeleted, categorySeleted, labelSeleted)//typeSeleted=-1表示全部類別(包含專欄和系列)，categorySeleted=[]表示該類別的全部種類，否則為該類別的選中種類
+        // console.log(typeSeleted, categorySeleted, labelSeleted)//typeSeleted=-1表示全部類別(包含專欄和系列)，categorySeleted=[]表示該類別的全部種類，否則為該類別的選中種類
     }, [isOptionChanged])
 
     const typeClick = (type) => {
@@ -44,6 +45,7 @@ const Searchbar = (props) => {
     }
 
     const categoryClick = (item) => {
+        console.log(item)
         item !== -1 ? //如果點【全部】，清空複選紀錄，否則將值加入複選陣列
             categorySeleted.includes(item) ? categorySeleted.splice(categorySeleted.indexOf(item), 1) : categorySeleted.push(item)
             :
@@ -62,7 +64,17 @@ const Searchbar = (props) => {
     const closeSearchView = () => {
         setOpenSearchView(false)
         input.current.focus();
-        console.log(input.current)
+    }
+
+    const claerSearchData = () => {
+        setInputText("")
+        setLabelSeleted([])
+        setAllType(true)
+        setAllOption(true)
+        setCategorySeleted([])
+        setTypeSeleted(-1)
+        dispatch({ type: new_Options, payload: { inputText: "", hashtag: [], type: [], category: [] } })
+        closeSearchView()
     }
 
     useEffect(() => {
@@ -77,12 +89,17 @@ const Searchbar = (props) => {
                     {openSearchView && <div className="searchbarView">
                         <div className="searchbarViewContent">
                             <div className="closeSearchView" onClick={() => closeSearchView()}><img src="https://cdn-icons-png.flaticon.com/512/3388/3388658.png" alt="" /></div>
-                            <input type="text" ref={input} placeholder='請輸入關鍵字 或 Hashtag (範例: #餐廳)'
-                                onChange={(e) => {
-                                    setInputText(e.target.value);
-                                    // console.log(e.target.value);
-                                    // console.log(inputText)
-                                }} value={inputText} />
+                            <div className='inputField'>
+                                <input type="text" ref={input} placeholder='請輸入關鍵字 或 Hashtag (範例: #餐廳)'
+                                    onChange={(e) => {
+                                        setInputText(e.target.value);
+                                        // console.log(e.target.value);
+                                        // console.log(inputText)
+                                    }} value={inputText} />
+                                <div className="clean" onClick={() => claerSearchData()}>
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </div>
                             <SearchBarLabels selectLB={(seleted) => { setLabelSeleted(seleted) }} />
                             <div className="type">
                                 <div className="title">
