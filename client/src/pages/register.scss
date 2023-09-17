@@ -15,7 +15,7 @@
         width: fit-content;
         padding: 3% 12% 3% 9%;
         gap: 0px;
-        margin: 5% auto 0 auto;
+        margin: 5% auto 5% auto;
         align-items: center;
 
         .title {
@@ -43,7 +43,9 @@
             grid-column-start: 1;
             align-items: center;
         }
-        .warning>span, .warning>p{
+
+        .warning>span,
+        .warning>p {
             text-align: left;
             grid-column-start: 2;
         }
@@ -139,4 +141,12 @@
     text-align: center;
 
     // display: none;
+}
+
+@media screen and (max-width:600px) {
+    .register {
+        .container {
+            margin: 10% 5% 10% 5%;
+        }
+    }
 }

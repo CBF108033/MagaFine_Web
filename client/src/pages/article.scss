@@ -86,7 +86,7 @@
 
                 img {
                     min-width: 50%;
-                    max-width: 80%;
+                    max-width: 100%;
                 }
             }
 
@@ -102,6 +102,7 @@
                 margin-bottom: 30px;
                 gap: 3em;
                 flex-wrap: wrap;
+                padding: 0 15px;
 
                 .articleLabels {
                     span {
@@ -164,7 +165,8 @@
                         //background-size: 120% 120%;
                         //background-position: right top;
                     }
-                    .contact{
+
+                    .contact {
                         font-size: 1.3em;
                     }
                 }
@@ -274,6 +276,18 @@
 
     .article .mainContent {
         margin-right: 0%;
+        width: 90%;
+
+        .wrapper {
+            .title {
+                margin: 0 5% 0 5%;
+            }
+
+            .subTitle {
+                margin: 0 5% 20px 5%;
+            }
+        }
+
     }
 
     .article .leftSide .container {
