@@ -2,6 +2,8 @@ import parse, { domToReact } from 'html-react-parser';
 
 //將html轉成react element
 export const parseToText = (html,skip) => {
+    //將特殊符號移除，要至少四個&nbsp;才會被移除
+    html = html.replace(/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/g, "");
     const options = {
         replace: (domNode) => {
             if (domNode.name === skip) {

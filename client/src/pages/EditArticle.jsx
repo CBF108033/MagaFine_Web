@@ -102,6 +102,9 @@ export const Editor = () => {
         }
     }
     const save = async () => {
+        // 替換空格為特殊符號，要四格空白才能換行
+        state.content = state.content.replace(/\s{8}|\t\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        state.content = state.content.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
         if (state.title === "") {
             alert("標題不得為空")
             return
