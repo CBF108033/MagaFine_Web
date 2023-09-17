@@ -67,6 +67,7 @@
                 overflow: auto;
                 text-overflow: ellipsis;
                 font-weight: 500;
+                max-height: -webkit-fill-available;
             }
         }
     }
