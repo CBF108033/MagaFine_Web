@@ -41,7 +41,7 @@ const CategoryArticle = () => {
             <div className="top">
                 <Navbar />
                 <Searchbar isOpen={(i) => { setIsOpenSearch(i) }} />
-                <div className="category">
+                <div className="categoryTitle">
                     <p>— {ArticleData.state} —</p>
                 </div>
                 <div className='posts'>
