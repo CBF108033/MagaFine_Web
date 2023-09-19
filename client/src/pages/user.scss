@@ -133,14 +133,15 @@
     .authPosts {
         display: flex;
         flex-direction: column;
+        margin-top: 5%;
 
         .userTitle {
             font-size: 1.5em;
             font-weight: 600;
             color: var(--secondary-button-color);
-            margin-bottom: 20px;
             border-bottom: 1px dashed var(--item-color);
             text-align: center;
+            padding-bottom: 10px;
         }
     }
 }
@@ -155,6 +156,7 @@
 
         .authPosts {
             width: 100% !important;
+            margin-top: 0;
             .userTitle {
                 margin-top: 50px;
             }

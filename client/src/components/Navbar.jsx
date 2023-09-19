@@ -95,6 +95,9 @@ const Navbar = () => {
                 </div>
                 <div className="linkList pc">
                     <div className="photo"> <img src={user ? data.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
+                    
+                    {/* 未啟用註解拿掉後有些地方要加isDisabled，忘記可以去看https://github.com/CBF108033/test0910v1/blob/e2b4882eb84a6afb85de25bc1047f351f04fdda1/src/components/Navbar.jsx#L107C41-L107C54 */}
+                    
                     {/* <!-- 未啟用，使用Tooltip/.notAllowed/.isDisabled/.notAllowed --> */}
                     {/* <div className='notAllowed isDisabled'> */}
                         <div className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</div>
@@ -104,11 +107,11 @@ const Navbar = () => {
                     {/* <Tooltip title="尚未啟用" arrow size="md" color="danger" variant="solid">
                         <div className='notAllowed'> */}
                             {user ?
-                                <Link className='isDisabled' to={'/'}>
+                                <Link className='' to={'/'}>
                                     <div className='logoutBT' onClick={handleClick}>登出</div>
                                 </Link>
                                 :
-                                <Link className='isDisabled' to={'/login'}>
+                                <Link className='' to={'/login'}>
                                     <div className='loginBT'>登入</div>
                                 </Link>
                             }
@@ -117,12 +120,12 @@ const Navbar = () => {
                     <Link to="https://instagram.com/giraffe_71_cy?igshid=ZGUzMzM3NWJiOQ==">
                         <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
                     </Link>
-                    <Tooltip title="暫無開放">
+                    {/* <Tooltip title="暫無開放"> */}
                         <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
-                    </Tooltip>
-                    <Tooltip title="暫無開放">
+                    {/* </Tooltip> */}
+                    {/* <Tooltip title="暫無開放"> */}
                         <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
-                    </Tooltip>
+                    {/* </Tooltip> */}
                 </div>
                 {/* 手機板 */}
                 <button className="navbar-toggle mobile" onClick={toggleNavbar}>
@@ -134,54 +137,54 @@ const Navbar = () => {
                             <div className="account">
                                 <div className="photo"> <img src={user ? user.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
                                 {/* <!-- 未啟用，使用Tooltip/.notAllowed/.isDisabled/.notAllowed --> */}
-                                <div className='notAllowed isDisabled'>
-                                    <span className="userName isDisabled" onClick={userNameClick}>{user ? user.userName : '訪客'}</span>
-                                </div>
+                                {/* <div className='notAllowed isDisabled'> */}
+                                    <span className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</span>
+                                {/* </div> */}
                             </div>
 
                             <div className="contactListMobile">
                                 <Link to="https://instagram.com/giraffe_71_cy?igshid=ZGUzMzM3NWJiOQ==">
                                     <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
                                 </Link>
-                                <Tooltip
+                                {/* <Tooltip
                                     title="尚未啟用" arrow size="md" color="danger" variant="solid"
                                     open={showTooltip}
                                     onOpen={() => setShowTooltip(true)}
                                     onClose={() => setShowTooltip(false)}
                                 >
-                                    <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}>
+                                    <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
                                         <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
-                                    </div>
-                                </Tooltip>
-                                <Tooltip
+                                    {/* </div>
+                                </Tooltip> */}
+                                {/* <Tooltip
                                     title="尚未啟用" arrow size="md" color="danger" variant="solid"
                                     open={showTooltip}
                                     onOpen={() => setShowTooltip(true)}
                                     onClose={() => setShowTooltip(false)}
                                 >
-                                    <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}>
+                                    <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
                                         <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
-                                    </div>
-                                </Tooltip>
+                                    {/* </div>
+                                </Tooltip> */}
                             </div>
-                            <Tooltip
+                            {/* <Tooltip
                                 title="尚未啟用" arrow size="md" color="danger" variant="solid"
                                 open={showTooltip}
                                 onOpen={() => setShowTooltip(true)}
                                 onClose={() => setShowTooltip(false)}
                             >
-                                <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}>
+                                <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
                                     {user ?
-                                        <Link className='isDisabled' to={'/'}>
+                                        <Link className='' to={'/'}>
                                             <div onClick={handleClick}>登出</div>
                                         </Link>
                                         :
-                                        <Link className='isDisabled' to={'/login'}>
+                                        <Link className='' to={'/login'}>
                                             <div className='loginBT'>登入</div>
                                         </Link>
                                     }
-                                </div>
-                            </Tooltip>
+                                {/* </div>
+                            </Tooltip> */}
                         </div>
                         : ""
                     }
