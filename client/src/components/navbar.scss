@@ -9,6 +9,8 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
     box-sizing: border-box;
     height: 50px;
     z-index: 100;
+    transform: translateY(0);
+    transition: 0.2s ease-in-out;
 
     .logo img {
         width: 65px;
@@ -40,6 +42,11 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
                     font-family: 'Kanit';
                     transition: .2s;
                 }
+
+                a{
+                    text-decoration: none;
+                    color: black;
+                }
             }
 
             .option:hover .items {
@@ -47,13 +54,17 @@ $ul-margin-bottom: 15px; //要小於等於$li-margin-bottom
                 cursor: pointer;
             }
 
-            .option:hover>p {
+            .option:hover>a>p {
                 color: var(--hover-color);
                 cursor: pointer;
             }
         }
     }
 
+}
+/* 滚動後收起導航欄 */
+.navbar.hidden {
+    transform: translateY(-100%);
 }
 
 .items {

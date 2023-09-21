@@ -15,6 +15,7 @@ const Navbar = () => {
     const ref = useRef(null)
     const navigate = useNavigate()
     const [showTooltip, setShowTooltip] = useState(false);
+    const [isNavbarHidden, setIsNavbarHidden] = useState(false);
 
     //當畫面縮放時自動調整items(下拉式清單的top位置) 參考:https://ithelp.ithome.com.tw/articles/10225184
     useEffect(() => {
@@ -58,8 +59,43 @@ const Navbar = () => {
         setIsOpen(!isOpen);
     }
 
+    // 當滾輪往下滾時隱藏navbar，往上滾時顯示navbar
+    useEffect(() => {
+        let prevScrollPos = window.scrollY;
+        let nowUpPos = 0;
+        let nowDownPos = 0;
+        // 處理滾動事件
+        const handleScroll = () => {
+            const pageHeight = document.documentElement.scrollHeight;
+            // 限制高度小于500px时不启用导航栏功能
+            if (pageHeight <= 1500) {
+                setIsNavbarHidden(false);
+                return;
+            }
+            const currentScrollPos = window.scrollY;
+            if (prevScrollPos < currentScrollPos) { //往下滾
+                nowDownPos = currentScrollPos;
+                setIsNavbarHidden(true);
+            } else { //往上滾
+                nowUpPos = currentScrollPos;
+                if (nowDownPos - nowUpPos > 150) {
+                    setIsNavbarHidden(false);
+                }
+            }
+            prevScrollPos = currentScrollPos;
+        };
+        handleScroll();
+        window.addEventListener('scroll', handleScroll);
+
+        // 清除事件監聽器
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+
     return (
-        <div className='navbar' ref={ref}>
+        <div className={`navbar ${isNavbarHidden ? 'hidden' : ''}`} ref={ref}>
             <div className="navbarContainer">
                 <Link to="/">
                     <div className="logo">
@@ -95,36 +131,36 @@ const Navbar = () => {
                 </div>
                 <div className="linkList pc">
                     <div className="photo"> <img src={user ? data.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
-                    
+
                     {/* 未啟用註解拿掉後有些地方要加isDisabled，忘記可以去看https://github.com/CBF108033/test0910v1/blob/e2b4882eb84a6afb85de25bc1047f351f04fdda1/src/components/Navbar.jsx#L107C41-L107C54 */}
-                    
+
                     {/* <!-- 未啟用，使用Tooltip/.notAllowed/.isDisabled/.notAllowed --> */}
                     {/* <div className='notAllowed isDisabled'> */}
-                        <div className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</div>
+                    <div className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</div>
                     {/* </div> */}
 
                     {/* <!-- 未啟用，使用Tooltip/.notAllowed/.isDisabled/.notAllowed --> */}
                     {/* <Tooltip title="尚未啟用" arrow size="md" color="danger" variant="solid">
                         <div className='notAllowed'> */}
-                            {user ?
-                                <Link className='' to={'/'}>
-                                    <div className='logoutBT' onClick={handleClick}>登出</div>
-                                </Link>
-                                :
-                                <Link className='' to={'/login'}>
-                                    <div className='loginBT'>登入</div>
-                                </Link>
-                            }
-                        {/* </div>
+                    {user ?
+                        <Link className='' to={'/'}>
+                            <div className='logoutBT' onClick={handleClick}>登出</div>
+                        </Link>
+                        :
+                        <Link className='' to={'/login'}>
+                            <div className='loginBT'>登入</div>
+                        </Link>
+                    }
+                    {/* </div>
                     </Tooltip> */}
                     <Link to="https://instagram.com/giraffe_71_cy?igshid=ZGUzMzM3NWJiOQ==">
                         <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
                     </Link>
                     {/* <Tooltip title="暫無開放"> */}
-                        <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
+                    <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
                     {/* </Tooltip> */}
                     {/* <Tooltip title="暫無開放"> */}
-                        <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
+                    <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
                     {/* </Tooltip> */}
                 </div>
                 {/* 手機板 */}
@@ -138,7 +174,7 @@ const Navbar = () => {
                                 <div className="photo"> <img src={user ? user.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
                                 {/* <!-- 未啟用，使用Tooltip/.notAllowed/.isDisabled/.notAllowed --> */}
                                 {/* <div className='notAllowed isDisabled'> */}
-                                    <span className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</span>
+                                <span className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</span>
                                 {/* </div> */}
                             </div>
 
@@ -153,8 +189,8 @@ const Navbar = () => {
                                     onClose={() => setShowTooltip(false)}
                                 >
                                     <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
-                                        <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
-                                    {/* </div>
+                                <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
+                                {/* </div>
                                 </Tooltip> */}
                                 {/* <Tooltip
                                     title="尚未啟用" arrow size="md" color="danger" variant="solid"
@@ -163,8 +199,8 @@ const Navbar = () => {
                                     onClose={() => setShowTooltip(false)}
                                 >
                                     <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
-                                        <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
-                                    {/* </div>
+                                <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
+                                {/* </div>
                                 </Tooltip> */}
                             </div>
                             {/* <Tooltip
@@ -174,16 +210,16 @@ const Navbar = () => {
                                 onClose={() => setShowTooltip(false)}
                             >
                                 <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
-                                    {user ?
-                                        <Link className='' to={'/'}>
-                                            <div onClick={handleClick}>登出</div>
-                                        </Link>
-                                        :
-                                        <Link className='' to={'/login'}>
-                                            <div className='loginBT'>登入</div>
-                                        </Link>
-                                    }
-                                {/* </div>
+                            {user ?
+                                <Link className='' to={'/'}>
+                                    <div onClick={handleClick}>登出</div>
+                                </Link>
+                                :
+                                <Link className='' to={'/login'}>
+                                    <div className='loginBT'>登入</div>
+                                </Link>
+                            }
+                            {/* </div>
                             </Tooltip> */}
                         </div>
                         : ""
