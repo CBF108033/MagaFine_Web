@@ -124,7 +124,7 @@
                         flex-direction: column;
                         width: 100%;
 
-                        .item>a {
+                        .item>.container {
                             cursor: pointer;
                             display: flex;
                             flex-direction: row;
@@ -171,11 +171,11 @@
                                 }
                             }
                         }
-                        .item>a:hover .right{
+                        .item>.container:hover .right{
                             display: block;
                         }
 
-                        .item>a:hover {
+                        .item>.container:hover {
                             background-color: #fff;
                             border: 1px solid transparent;
                             box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 2px 6px 2px rgba(60, 64, 67, .15);
