@@ -26,6 +26,52 @@ const Skeleton = ({ type, length }) => {
         </div>
     )
 
+    const NewsSkeleton = ({ i }) => (
+        <div className="skeletonNews" key={i}>
+            <div className="skeletonBox">
+                <div className="skeletonBoxContainer">
+                    <div className="skeletonCoverImg">
+                        <div className='skeletonImg'/>
+                    </div>
+                    <div className="skeletonContext">
+                        <h1></h1>
+                        <h2></h2>
+                        <h3></h3>
+                        <h2></h2>
+                    </div>
+                </div>
+            </div>
+            <div className="skeletonBox">
+                <div className="skeletonBoxContainer">
+                    <div className="skeletonCoverImg">
+                        <div className='skeletonImg'/>
+                    </div>
+                    <div className="skeletonContext">
+                        <h1></h1>
+                        <h2></h2>
+                        <h3></h3>
+                        <h2></h2>
+                    </div>
+                </div>
+            </div>
+            <div className="skeletonBox" style={{height: '560px'}}>
+                <div className="skeletonBoxContainer" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <div className="skeletonCoverImg">
+                        <div className='skeletonImg'/>
+                    </div>
+                    <div className="skeletonContext">
+                        <h1></h1>
+                        <h2></h2>
+                        <h3></h3>
+                        <h1></h1>
+                        <h3></h3>
+                        <h2></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+
     const HomePageSkeleton = ({ i }) => (
         <div className="skeleton HomePageArticleItem" key={i}></div>
     )
@@ -44,13 +90,19 @@ const Skeleton = ({ type, length }) => {
     else if (type === "postSkeleton") {
         return Array(number).fill().map((item, i) => <PostSkeleton key={i} />)
     }
+    else if (type === "newsSkeleton") {
+        return Array(number).fill().map((item, i) => <NewsSkeleton key={i} />)
+    }
     //amount 不用是因為他有上面得data.js的UI內資料不像PopularHotels是整個傳過來的資料總數都不確定
     //而Amount是因為是我們的測試做的type與city就都知道有這麼多就不用在傳入length告訴他要生成多少個遮罩
-    else if (type ==="HomePageSkeleton"){
+    else if (type === "HomePageSkeleton") {
         return Array(number).fill().map((item, i) => <HomePageSkeleton key={i} />)
     }
-    else if(type ==="HomePageSkeleton_total"){
-        return <HomePageSkeleton_total/>
+    else if (type === "HomePageSkeleton_total") {
+        return <HomePageSkeleton_total />
+    }
+    else{
+        return <HomePageSkeleton_total />
     }
 }
 
