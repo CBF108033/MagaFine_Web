@@ -67,7 +67,7 @@ const Navbar = () => {
         // 處理滾動事件
         const handleScroll = () => {
             const pageHeight = document.documentElement.scrollHeight;
-            // 限制高度小于500px时不启用导航栏功能
+            // 限制高度小於500px時不啟用導航欄功能
             if (pageHeight <= 1500) {
                 setIsNavbarHidden(false);
                 return;
@@ -78,7 +78,7 @@ const Navbar = () => {
                 setIsNavbarHidden(true);
             } else { //往上滾
                 nowUpPos = currentScrollPos;
-                if (nowDownPos - nowUpPos > 150) {
+                if (nowDownPos - nowUpPos > 150 || currentScrollPos < 100) {
                     setIsNavbarHidden(false);
                 }
             }
@@ -105,7 +105,7 @@ const Navbar = () => {
 
                 <div className="dropdown">
                     <div className="option">
-                        <p>WHAT'S NEW</p>
+                        <Link to="/news"><p>WHAT'S NEW</p></Link>
                     </div>
                     <div className="option">
                         <p>專欄</p><img src="https://cdn-icons-png.flaticon.com/512/9497/9497400.png" alt="" />
