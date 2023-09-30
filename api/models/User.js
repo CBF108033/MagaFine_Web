@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     posterID:{
         type: [String],
         default: []
+    },
+    newsID: {
+        type: [String],
+        default: []
     }
 }, { timestamps: true })
 

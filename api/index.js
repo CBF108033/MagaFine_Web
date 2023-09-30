@@ -7,6 +7,7 @@ import authApiRouter from "./ApiRoutes/auth.js";
 import labelsApiRouter from "./ApiRoutes/labels.js";
 import columnsApiRouter from "./ApiRoutes/columns.js";
 import seriesApiRouter from "./ApiRoutes/series.js";
+import newsApiRouter from "./ApiRoutes/news.js";
 import cookieParser from "cookie-parser"
 
 dotenv.config();
@@ -42,6 +43,7 @@ app.use("/api/v1/auth", authApiRouter);
 app.use("/api/v1/labels", labelsApiRouter);
 app.use("/api/v1/columns", columnsApiRouter);
 app.use("/api/v1/series", seriesApiRouter);
+app.use("/api/v1/news", newsApiRouter);
 
 app.use((error,req,res,next) => {
     const errorStatus = error.status || 500;
