@@ -109,9 +109,9 @@ const HomePage = () => {
 
     const disploy = async (e, id, display) => {
         e.stopPropagation();
-        if(TAB_KEY === HOME_PAGE_TYPE_NEWS) {
+        if (tab === HOME_PAGE_TYPE_NEWS) {
             const res = await axios.put("/news/" + authId + "/" + id, { 'disploy': display })
-        } else if (TAB_KEY === HOME_PAGE_TYPE_ARTICLE){
+        } else if (tab === HOME_PAGE_TYPE_ARTICLE){
             const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
         }
         window.location.reload()
