@@ -11,13 +11,14 @@ import axios from 'axios';
 const AddNewPost = () => {
     const { user, dispatch } = useContext(LoginContext);
     const navigate = useNavigate()
-    const [state, setState] = useState({
+    let [state, setState] = useState({
         title: "",
         content: "",
         type: "專欄",
         category: "生活",
         hashtags: [],
         cover: null,
+        disploy: false,
     });
     const [category, setCategory] = useState([])
     const [type, setType] = useState("專欄")
@@ -76,7 +77,8 @@ const AddNewPost = () => {
             return
         }
     }
-    const save = async () => {
+    const save = async (disploy) => {
+        state = { ...state, ['disploy']: disploy }
         if (state.title === "") {
             alert("標題不得為空")
             return
@@ -143,7 +145,8 @@ const AddNewPost = () => {
                     <span className="nav-left-item">列表</span>
                 </div>
                 <div className="nav-right">
-                    <button className='saveBT' onClick={save}>發佈</button>
+                    <button className='saveBT' onClick={e => save(false)}>儲存(不發佈)</button>
+                    <button className='saveBT' onClick={e => save(true)}>發佈</button>
                 </div>
             </div>
             <main>

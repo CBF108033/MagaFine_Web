@@ -41,6 +41,10 @@ const ArticleSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    disploy: {//'是否發佈'
+        type: Boolean,
+        default: false
+    },
     comments: [{//'留言'
         type: { type: String, default: NaN },
         date: { type: Date, default: Date },

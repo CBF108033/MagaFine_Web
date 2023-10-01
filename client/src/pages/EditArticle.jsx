@@ -20,13 +20,14 @@ export const Editor = () => {
 
     const { user, dispatch } = useContext(LoginContext);
     // console.log(user);
-    const [state, setState] = useState({
+    let [state, setState] = useState({
         title: "1",
         content: null,
         type: "1",
         category: "1",
         hashtags: [],
-        cover: null
+        cover: null,
+        disploy: false
     });
     const [file, setFile] = useState()
 
@@ -101,7 +102,8 @@ export const Editor = () => {
             return
         }
     }
-    const save = async () => {
+    const save = async (disploy) => {
+        state = { ...state, ['disploy']: disploy }
         // 替換空格為特殊符號，要四格空白才能換行
         state.content = state.content.replace(/\s{8}|\t\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         state.content = state.content.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
@@ -169,7 +171,8 @@ export const Editor = () => {
                     <span className="nav-left-item">列表</span>
                 </div>
                 <div className="nav-right">
-                    <button className='saveBT' onClick={save}>儲存</button>
+                    <button className='saveBT' onClick={() => save(false)}>儲存(不發佈)</button>
+                    <button className='saveBT' onClick={() => save(true)}>更新發佈</button>
                 </div>
             </div>
             <main>

@@ -17,7 +17,10 @@ export const createArticle = async (req, res, next) => {
         } catch (error) {
             next(500, "找不到此使用者，無法上傳文章更新")
         }
-        const d = updateLabelExist(article)
+        if (saveArticle.disploy !== false) {
+            //把label加入label中
+            updateLabelExist(saveArticle)
+        }
         res.status(200).json(saveArticle)
     } catch (error) {
         errorMessage(500, "文章上傳失敗，可能為格式錯誤", error)
@@ -38,7 +41,8 @@ export const getAllArticles = async (req, res, next) => {
     const searchTextQuery = searchText && { content: { $regex: searchText, $options: "i" } } || "";
     const hashtagsQuery = hashtags && {hashtags:{ "$in": hashtags.split(',') }} || {};
     const categoryQuery = category && {category:{ "$in": category.split(',') }} || {};
-    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery };
+    const disployQuery = {disploy: true} || {};
+    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery, ...disployQuery };
     try {
         const articles = await Article.find(query).sort({ createdAt: -1 });
         res.status(200).json(articles);
@@ -48,6 +52,25 @@ export const getAllArticles = async (req, res, next) => {
 }
 
 export const getUserArticles = async (req, res, next) => {
+    const getUserID = req.params.userID;
+    try {
+        const userData = await User.findById(getUserID);
+        try {
+            let articleList = await Promise.all(userData.posterID.map(articleID => {
+                return Article.findById(articleID)
+            }))
+            //刪除未發佈的文章
+            articleList = articleList.filter(element => element.disploy === true);
+            res.status(200).json(articleList);
+        } catch (error) {
+            next(errorMessage(500, "找不到此該作者的文章", error))
+        }
+    } catch (error) {
+        next(errorMessage(500, "找不到此使用者id，無法查看文章", error))
+    }
+}
+
+export const getMyselfArticles = async (req, res, next) => {
     const getUserID = req.params.userID;
     try {
         const userData = await User.findById(getUserID);
@@ -67,6 +90,21 @@ export const getUserArticles = async (req, res, next) => {
 export const updatedArticle = async (req, res, next) => {
     try {
         const updateArticle = await Article.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        if (updateArticle.disploy === false) {
+            //把label從label中刪除
+            try {
+                updateArticle.hashtags.map(async label => {
+                    await Label.findOneAndUpdate({ labelName: label }, { $pull: { articles: updateArticle.id } }, { new: true })
+                    const data = await Label.findOne({ labelName: label })
+                    if (data.articles.length === 0) await Label.findOneAndDelete({ labelName: label })
+                })
+            } catch (error) {
+                res.status(500).json("無此文章，Label刪除失敗")
+            }
+        }else{
+            //把label加入label中
+            updateLabelExist(updateArticle)
+        }
         res.status(200).json(updateArticle);
     } catch (error) {
         next(errorMessage(500, "文章的更新失敗，可能為格式錯誤或是找不到其ID", error))

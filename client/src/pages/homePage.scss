@@ -158,20 +158,38 @@
                             }
 
                             .right {
-                                display: none;
                                 padding: 16px;
-                                .delete{
+                                .unlock, .lock{
+                                    display: block!important;
                                     padding: 10px;
                                     border-radius: 50%;
                                     transition: 0.2s;
                                 }
+                                .unlock:hover{
+                                    background: rgba(0, 0, 0, 0.72);
+                                    border-radius: 50%;
+                                }
+                                .lock:hover{
+                                    background: rgba(236, 189, 174, 0.722);
+                                    border-radius: 50%;
+                                }
+                                .delete{
+                                    display: none;
+                                    padding: 10px;
+                                    border-radius: 50%;
+                                    transition: 0.2s;
+                                    color: #3f4755;
+                                }
                                 .delete:hover{
                                     background: rgba(0, 0, 0, 0.1);
                                     border-radius: 50%;
+                                    >i:hover{
+                                        color: #a13838;
+                                    }
                                 }
                             }
                         }
-                        .item>.container:hover .right{
+                        .item>.container:hover .right .delete{
                             display: block;
                         }
 

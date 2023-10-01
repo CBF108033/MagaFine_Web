@@ -105,6 +105,12 @@ const HomePage = () => {
         }
     }
 
+    const disploy = async (e, id, display) => {
+        e.stopPropagation();
+        const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
+        window.location.reload()
+    }
+
     return (
         <div className='homePage'>
             <div className="nav">
@@ -179,8 +185,19 @@ const HomePage = () => {
                                                     {/* <div className="edit">
                                                     <i class="fa-solid fa-pencil fa-xl" style={{ color: "#3f4755" }}></i>
                                                 </div> */}
+                                                    {!item.disploy ?
+                                                        <>
+                                                            <div className="lock" onClick={e => disploy(e, item._id, true)}>
+                                                                <i class="fa-solid fa-lock fa-xl" style={{ color: "#3f4755" }}></i>
+                                                            </div></> :
+                                                        <>
+                                                            <div className="unlock" onClick={e => disploy(e, item._id, false)}>
+                                                                <i class="fa-solid fa-unlock fa-xl" style={{ color: '#78c046' }}></i>
+                                                            </div>
+                                                        </>
+                                                    }
                                                     <div className="delete" onClick={e => deleteArticle(e, item._id)}>
-                                                        <i class="fa-solid fa-trash fa-xl" style={{ color: "#3f4755" }}></i>
+                                                        <i class="fa-solid fa-trash fa-xl" ></i>
                                                     </div>
                                                 </div>
                                             </div>
