@@ -9,13 +9,15 @@ import parse from 'html-react-parser'
 
 window.addEventListener('load', () => {
     const grid = document.getElementById('grid');
-    const items = grid.getElementsByClassName('inner-container');
-
-    // 計算每個項目的高度，並設為自動
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const randomHeight = Math.floor(Math.random() * 200 + 100); // 隨機高度範例
-        item.style.height = `${randomHeight}px`;
+    try {
+        const items = grid.getElementsByClassName('inner-container') ?? [];
+        // 計算每個項目的高度，並設為自動
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const randomHeight = Math.floor(Math.random() * 200 + 100); // 隨機高度範例
+            item.style.height = `${randomHeight}px`;
+        }
+    } catch (err) {
     }
 });
 
@@ -35,7 +37,7 @@ const News = () => {
             fetchData()
         }
     }, [data])
-    
+
     return (
         <div className='News'>
             <div className="top">
