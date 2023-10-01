@@ -6,13 +6,14 @@ import { useLocation } from 'react-router-dom'
 import { parseToText, postTextLimit } from '../parse.js'
 import Skeleton from '../components/Skeleton'
 import { LoginContext } from '../context/LoginContext'
-import { HOME_PAGE_TYPE_ARTICLE, HOME_PAGE_TYPE_NEWS } from '../constants/actionTypes'
+import { HOME_PAGE_TYPE_ARTICLE, HOME_PAGE_TYPE_NEWS, TAB_KEY } from '../constants/actionTypes'
 
 const HomePage = () => {
     let [data, setData] = useState([])
     const [deleteState, setDeleteState] = useState(false)
     let [loading, setLoading] = useState(false)
-    let [tab, setTab] = useState(2)
+    let tabNow = localStorage.getItem(TAB_KEY) ? localStorage.getItem("tab") : localStorage.setItem("tab", "2")
+    let [tab, setTab] = useState(parseInt(tabNow))
     let [isSwitch, setIsSwitch] = useState(true)
     const navigate = useNavigate()
     const locationAuthUrl = useLocation()
@@ -94,6 +95,7 @@ const HomePage = () => {
 
     const handleTab = (e, index) => {
         // e.preventDefault()
+        localStorage.setItem(TAB_KEY, index);
         setTab(index)
         setIsSwitch(!isSwitch)
     }
@@ -107,7 +109,11 @@ const HomePage = () => {
 
     const disploy = async (e, id, display) => {
         e.stopPropagation();
-        const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
+        if(TAB_KEY === HOME_PAGE_TYPE_NEWS) {
+            const res = await axios.put("/news/" + authId + "/" + id, { 'disploy': display })
+        } else if (TAB_KEY === HOME_PAGE_TYPE_ARTICLE){
+            const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
+        }
         window.location.reload()
     }
 
