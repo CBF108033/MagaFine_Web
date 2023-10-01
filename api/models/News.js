@@ -17,6 +17,10 @@ const NewsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    disploy: {//'是否發佈'
+        type: Boolean,
+        default: false
+    },
 }, { timestamps: true });
 
 export default mongoose.mongoose.model("News", NewsSchema)

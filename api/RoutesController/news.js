@@ -29,8 +29,10 @@ export const getNews = async (req, res, next) => {
 }
 
 export const getAllNews = async (req, res, next) => {
+    const disployQuery = { disploy: true } || {};
+    const query = { ...disployQuery };
     try {
-        const news = await News.find().sort({ createdAt: -1 });
+        const news = await News.find(query).sort({ createdAt: -1 });
         res.status(200).json(news);
     } catch (error) {
         next(errorMessage(500, "搜尋失敗，為資料庫變動問題", error))
@@ -38,6 +40,25 @@ export const getAllNews = async (req, res, next) => {
 }
 
 export const getUserNews = async (req, res, next) => {
+    const getUserID = req.params.userID;
+    try {
+        const userData = await User.findById(getUserID);
+        try {
+            let newsList = await Promise.all(userData.newsID.map(newsID => {
+                return News.findById(newsID)
+            }))
+            //刪除未發佈的News
+            newsList = newsList.filter(element => element.disploy === true);
+            res.status(200).json(newsList);
+        } catch (error) {
+            next(errorMessage(500, "找不到此該作者的news", error))
+        }
+    } catch (error) {
+        next(errorMessage(500, "找不到此使用者id，無法查看news", error))
+    }
+}
+
+export const getMyselfNews = async (req, res, next) => {
     const getUserID = req.params.userID;
     try {
         const userData = await User.findById(getUserID);

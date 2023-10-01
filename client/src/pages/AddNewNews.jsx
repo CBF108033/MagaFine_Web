@@ -11,10 +11,11 @@ import axios from 'axios';
 const AddNewNews = () => {
     const { user, dispatch } = useContext(LoginContext);
     const navigate = useNavigate()
-    const [state, setState] = useState({
+    let [state, setState] = useState({
         title: "",
         content: null,
-        cover: null
+        cover: null,
+        disploy: false,
     });
     const coverUpload = useRef(null)
 
@@ -33,7 +34,8 @@ const AddNewNews = () => {
             return
         }
     }
-    const save = async () => {
+    const save = async (disploy) => {
+        state = { ...state, ['disploy']: disploy }
         if (state.title === "") {
             alert("標題不得為空")
             return
@@ -65,7 +67,8 @@ const AddNewNews = () => {
                     <span className="nav-left-item">列表</span>
                 </div>
                 <div className="nav-right">
-                    <button className='saveBT' onClick={save}>發佈</button>
+                    <button className='saveBT' onClick={e => save(false)}>儲存(不發佈)</button>
+                    <button className='saveBT' onClick={e => save(true)}>發佈</button>
                 </div>
             </div>
             <main>
