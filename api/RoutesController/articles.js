@@ -39,9 +39,9 @@ export const getArticles = async (req, res, next) => {
 export const getAllArticles = async (req, res, next) => {
     const { searchText, hashtags, category, ...withquery } = req.query;//?hashtags=經典,美食餐廳&category=電影
     const searchTextQuery = searchText && { content: { $regex: searchText, $options: "i" } } || "";
-    const hashtagsQuery = hashtags && {hashtags:{ "$in": hashtags.split(',') }} || {};
-    const categoryQuery = category && {category:{ "$in": category.split(',') }} || {};
-    const disployQuery = {disploy: true} || {};
+    const hashtagsQuery = hashtags && { hashtags: { "$in": hashtags.split(',') } } || {};
+    const categoryQuery = category && { category: { "$in": category.split(',') } } || {};
+    const disployQuery = { disploy: true } || {};
     const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery, ...disployQuery };
     try {
         const articles = await Article.find(query).sort({ createdAt: -1 });
@@ -93,15 +93,16 @@ export const updatedArticle = async (req, res, next) => {
         if (updateArticle.disploy === false) {
             //把label從label中刪除
             try {
-                updateArticle.hashtags.map(async label => {
-                    await Label.findOneAndUpdate({ labelName: label }, { $pull: { articles: updateArticle.id } }, { new: true })
-                    const data = await Label.findOne({ labelName: label })
-                    if (data.articles.length === 0) await Label.findOneAndDelete({ labelName: label })
-                })
+                updateArticle.hashtags !== 0 ??
+                    updateArticle.hashtags.map(async label => {
+                        await Label.findOneAndUpdate({ labelName: label }, { $pull: { articles: updateArticle.id } }, { new: true })
+                        const data = await Label.findOne({ labelName: label })
+                        if (data.articles.length === 0) await Label.findOneAndDelete({ labelName: label })
+                    })
             } catch (error) {
                 res.status(500).json("無此文章，Label刪除失敗")
             }
-        }else{
+        } else {
             //把label加入label中
             updateLabelExist(updateArticle)
         }
