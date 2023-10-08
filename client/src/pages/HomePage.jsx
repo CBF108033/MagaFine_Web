@@ -11,6 +11,7 @@ import { HOME_PAGE_TYPE_ARTICLE, HOME_PAGE_TYPE_NEWS, TAB_KEY } from '../constan
 const HomePage = () => {
     let [data, setData] = useState([])
     const [deleteState, setDeleteState] = useState(false)
+    const [disployState, setDisployState] = useState(false)
     let [loading, setLoading] = useState(false)
     let tabNow = localStorage.getItem(TAB_KEY) ? localStorage.getItem("tab") : localStorage.setItem("tab", "2")
     let [tab, setTab] = useState(parseInt(tabNow))
@@ -66,6 +67,13 @@ const HomePage = () => {
         }
     }, [deleteState])
 
+    useEffect(() => {
+        if (disployState && user) {
+            fetchArticleData()
+            setDisployState(false)
+        }
+    }, [disployState])
+
     const deleteArticle = async (e, id) => {
         e.preventDefault();
         e.stopPropagation();
@@ -114,7 +122,7 @@ const HomePage = () => {
         } else if (tab === HOME_PAGE_TYPE_ARTICLE){
             const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
         }
-        window.location.reload()
+        setDisployState(true)
     }
 
     return (
