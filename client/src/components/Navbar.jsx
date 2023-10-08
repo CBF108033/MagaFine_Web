@@ -130,7 +130,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="linkList pc">
-                    <div className="photo"> <img src={user ? data.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
+                    <div className="photo"> <img src={user ? data.photo : "https://i.imgur.com/wJrgG3Y_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>{/* https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand */}
 
                     {/* 未啟用註解拿掉後有些地方要加isDisabled，忘記可以去看https://github.com/CBF108033/test0910v1/blob/e2b4882eb84a6afb85de25bc1047f351f04fdda1/src/components/Navbar.jsx#L107C41-L107C54 */}
 
@@ -171,7 +171,7 @@ const Navbar = () => {
                     {isOpen ?
                         <div className="linkList mobile mobileActive">
                             <div className="account">
-                                <div className="photo"> <img src={user ? user.photo : "https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>
+                                <div className="photo"> <img src={user ? user.photo : "https://i.imgur.com/wJrgG3Y_d.webp?maxwidth=760&fidelity=grand"} alt="" /></div>{/*https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand*/}
                                 {/* <!-- 未啟用，使用Tooltip/.notAllowed/.isDisabled/.notAllowed --> */}
                                 {/* <div className='notAllowed isDisabled'> */}
                                 <span className="userName" onClick={userNameClick}>{user ? user.userName : '訪客'}</span>
