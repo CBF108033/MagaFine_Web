@@ -16,6 +16,7 @@ const HomePage = () => {
     let tabNow = localStorage.getItem(TAB_KEY) ? localStorage.getItem("tab") : localStorage.setItem("tab", "2")
     let [tab, setTab] = useState(parseInt(tabNow))
     let [isSwitch, setIsSwitch] = useState(true)
+    let [isMobile, setIsMobile] = useState(false)
     const navigate = useNavigate()
     const locationAuthUrl = useLocation()
     const authId = locationAuthUrl.pathname.split("/")[2]
@@ -127,12 +128,14 @@ const HomePage = () => {
 
     const checkScreenSize = () => {
         if (window.innerWidth < 768) {
+            setIsMobile(true)
             if (document.querySelector('.main-left')) {
                 document.querySelectorAll('.main-left')[1].style.display = 'none';
                 document.querySelector('.main-left-mobile').style.display = 'flex';
                 document.querySelector('.main-right').classList.add('main-right-mobile');
             }
         } else {
+            setIsMobile(false)
             if (document.querySelector('.main-left')) {
                 document.querySelectorAll('.main-left')[1].style.display = 'flex';
                 document.querySelector('.main-left-mobile').style.display = 'none';
@@ -140,8 +143,10 @@ const HomePage = () => {
             }
         }
     }
-    checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
+    useEffect(() => {
+        checkScreenSize();
+    }, [isMobile])
 
     return (
         <div className='homePage'>
@@ -231,7 +236,7 @@ const HomePage = () => {
                                                         <div className="item-title"><p>{item.title}</p></div>
                                                         {/* {tab === HOME_PAGE_TYPE_NEWS && <div className="item-content"><p>{item.content.length > 55 ? item.content.substring(0, 70) + `...` : item.content}</p></div>}
                                                         {tab === HOME_PAGE_TYPE_ARTICLE && <div className="item-content"><p>{postTextLimit(parseToText(item.content, 'p7'))}</p></div>} */}
-                                                        <div className="item-content"><p>{postTextLimit(parseToText(item.content, 'p7'))}</p></div>
+                                                        {!isMobile && <div className="item-content"><p>{postTextLimit(parseToText(item.content, 'p7'))}</p></div>}
                                                         <div className="item-date"><p>{item.date}</p></div>
                                                     </div>
                                                 </div>
@@ -250,7 +255,7 @@ const HomePage = () => {
                                                             </div>
                                                         </>
                                                     }
-                                                    <div className="delete" onClick={e => deleteArticle(e, item._id)}>
+                                                    <div className="delete" onClick={e => deleteArticle(e, item._id)} style={{ display: 'block' }}>
                                                         <i class="fa-solid fa-trash fa-xl" ></i>
                                                     </div>
                                                 </div>
