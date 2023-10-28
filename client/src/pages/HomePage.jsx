@@ -153,13 +153,13 @@ const HomePage = () => {
             <div className="nav">
                 <div className="nav-left">
                     <Link to={`/user/${user?._id}`}>
-                        <i class="fa-solid fa-arrow-left-long fa-xl" style={{ color: "#3f4755" }}></i>
+                        <i className="fa-solid fa-arrow-left-long fa-xl" style={{ color: "#3f4755" }}></i>
                         <span className="nav-left-item">主頁</span>
                     </Link>
                 </div>
                 <div className="nav-right">
                     <Link to="/">
-                        <i class="fa-solid fa-house-chimney fa-xl" style={{ color: "#3f4755" }}></i>
+                        <i className="fa-solid fa-house-chimney fa-xl" style={{ color: "#3f4755" }}></i>
                     </Link>
                 </div>
             </div>
@@ -171,18 +171,18 @@ const HomePage = () => {
                     <div className="add row-align">
                         {tab === HOME_PAGE_TYPE_NEWS &&
                             <Link to="/news/add" title='新增NEWS'>
-                                <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                <i className="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
                             </Link>
                         }
                         {tab === HOME_PAGE_TYPE_ARTICLE &&
                             <Link to="/article/add" title='新增文章'>
-                                <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                <i className="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
                             </Link>
                         }
                     </div>
-                    <div className="item row-align" onClick={e => handleTab(e, 1)}><i class="fa-regular fa-newspaper fa-xl" style={{ color: "#3f4755" }}></i></div>
-                    <div className="item row-align" onClick={e => handleTab(e, 2)}><i class="fa-regular fa-file-lines fa-xl" style={{ color: "#3f4755" }}></i></div>
-                    <div className="item row-align"><i class="fa-solid fa-gear fa-xl" style={{ color: "#3f4755" }}></i></div>
+                    <div className="item row-align" onClick={e => handleTab(e, 1)}><i className="fa-regular fa-newspaper fa-xl" style={{ color: "#3f4755" }}></i></div>
+                    <div className="item row-align" onClick={e => handleTab(e, 2)}><i className="fa-regular fa-file-lines fa-xl" style={{ color: "#3f4755" }}></i></div>
+                    <div className="item row-align"><i className="fa-solid fa-gear fa-xl" style={{ color: "#3f4755" }}></i></div>
                 </div>
             </div>
             <main>
@@ -195,13 +195,13 @@ const HomePage = () => {
                             <div className="add">
                                 {tab === HOME_PAGE_TYPE_NEWS &&
                                     <Link to="/news/add">
-                                        <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                        <i className="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
                                         <span>新增NEWS</span>
                                     </Link>
                                 }
                                 {tab === HOME_PAGE_TYPE_ARTICLE &&
                                     <Link to="/article/add">
-                                        <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                        <i className="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
                                         <span>新增文章</span>
                                     </Link>
                                 }
@@ -242,21 +242,21 @@ const HomePage = () => {
                                                 </div>
                                                 <div className="right">
                                                     {/* <div className="edit">
-                                                    <i class="fa-solid fa-pencil fa-xl" style={{ color: "#3f4755" }}></i>
+                                                    <i className="fa-solid fa-pencil fa-xl" style={{ color: "#3f4755" }}></i>
                                                 </div> */}
                                                     {!item.disploy ?
                                                         <>
                                                             <div className="lock" onClick={e => disploy(e, item._id, true)}>
-                                                                <i class="fa-solid fa-lock fa-xl" style={{ color: "#3f4755" }}></i>
+                                                                <i className="fa-solid fa-lock fa-xl" style={{ color: "#3f4755" }}></i>
                                                             </div></> :
                                                         <>
                                                             <div className="unlock" onClick={e => disploy(e, item._id, false)}>
-                                                                <i class="fa-solid fa-unlock fa-xl" style={{ color: '#78c046' }}></i>
+                                                                <i className="fa-solid fa-unlock fa-xl" style={{ color: '#78c046' }}></i>
                                                             </div>
                                                         </>
                                                     }
                                                     <div className="delete" onClick={e => deleteArticle(e, item._id)} style={{ display: 'block' }}>
-                                                        <i class="fa-solid fa-trash fa-xl" ></i>
+                                                        <i className="fa-solid fa-trash fa-xl" ></i>
                                                     </div>
                                                 </div>
                                             </div>
