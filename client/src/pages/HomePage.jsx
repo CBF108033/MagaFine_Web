@@ -128,13 +128,13 @@ const HomePage = () => {
     const checkScreenSize = () => {
         if (window.innerWidth < 768) {
             if (document.querySelector('.main-left')) {
-                document.querySelector('.main-left').style.display = 'none';
+                document.querySelectorAll('.main-left')[1].style.display = 'none';
                 document.querySelector('.main-left-mobile').style.display = 'flex';
                 document.querySelector('.main-right').classList.add('main-right-mobile');
             }
         } else {
             if (document.querySelector('.main-left')) {
-                document.querySelector('.main-left').style.display = 'flex';
+                document.querySelectorAll('.main-left')[1].style.display = 'flex';
                 document.querySelector('.main-left-mobile').style.display = 'none';
                 document.querySelector('.main-right').classList.remove('main-right-mobile');
             }
@@ -156,6 +156,28 @@ const HomePage = () => {
                     <Link to="/">
                         <i class="fa-solid fa-house-chimney fa-xl" style={{ color: "#3f4755" }}></i>
                     </Link>
+                </div>
+                <div className="main-left main-left-mobile">
+                    <div className="title row-align">
+                        <span>{user.userName?.slice(0, 1)}</span>
+                    </div>
+                    <div className="content">
+                        <div className="add row-align">
+                            {tab === HOME_PAGE_TYPE_NEWS &&
+                                <Link to="/news/add" title='新增NEWS'>
+                                    <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                </Link>
+                            }
+                            {tab === HOME_PAGE_TYPE_ARTICLE &&
+                                <Link to="/article/add" title='新增文章'>
+                                    <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                </Link>
+                            }
+                        </div>
+                        <div className="item row-align" onClick={e => handleTab(e, 1)}><i class="fa-regular fa-newspaper fa-xl" style={{ color: "#3f4755" }}></i></div>
+                        <div className="item row-align" onClick={e => handleTab(e, 2)}><i class="fa-regular fa-file-lines fa-xl" style={{ color: "#3f4755" }}></i></div>
+                        <div className="item row-align"><i class="fa-solid fa-gear fa-xl" style={{ color: "#3f4755" }}></i></div>
+                    </div>
                 </div>
             </div>
             <main>
@@ -187,36 +209,14 @@ const HomePage = () => {
 
                         </div>
                     </div>
-                    <div className="main-left main-left-mobile">
-                        <div className="title row-align">
-                            <span>{user.userName?.slice(0, 1)}</span>
-                        </div>
-                        <div className="content">
-                            <div className="add row-align">
-                                {tab === HOME_PAGE_TYPE_NEWS &&
-                                    <Link to="/news/add" title='新增NEWS'>
-                                        <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
-                                    </Link>
-                                }
-                                {tab === HOME_PAGE_TYPE_ARTICLE &&
-                                    <Link to="/article/add" title='新增文章'>
-                                        <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
-                                    </Link>
-                                }
-                            </div>
-                            <div className="item row-align" onClick={e => handleTab(e, 1)}><i class="fa-regular fa-newspaper fa-xl" style={{ color: "#3f4755" }}></i></div>
-                            <div className="item row-align" onClick={e => handleTab(e, 2)}><i class="fa-regular fa-file-lines fa-xl" style={{ color: "#3f4755" }}></i></div>
-                            <div className="item row-align"><i class="fa-solid fa-gear fa-xl" style={{ color: "#3f4755" }}></i></div>
-                        </div>
-                    </div>
                     <div className="main-right">
-                        {user ? (loading ? <Skeleton type="HomePageSkeleton_total" /> : <span className="main-right-title">全部共{data.length}筆</span>)
+                        {user ? (loading ? <Skeleton type="HomePageSkeleton_total" /> : <span className="main-right-title">全部共{data?.length || 0}筆</span>)
                             :
                             <span className="main-right-title">全部共0筆</span>
                         }
                         <div className="myArticle">
                             <div className="wrapper">
-                                {loading ? <Skeleton type="HomePageSkeleton" length={5}></Skeleton> : data.map((item, index) => {
+                                {loading ? <Skeleton type="HomePageSkeleton" length={5}></Skeleton> : data?.map((item, index) => {
                                     let url = "";
                                     if (tab === HOME_PAGE_TYPE_NEWS) { url = "/news/edit/" + item._id }
                                     else if (tab === HOME_PAGE_TYPE_ARTICLE) { url = "/article/edit/" + item._id }
