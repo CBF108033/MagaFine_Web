@@ -86,7 +86,7 @@ const HomePage = () => {
             // console.log(deleteItem);
             // console.log('/articles/' + authId + ' /' + id);
             setDeleteState(true)
-        }else{
+        } else {
             setDeleteState(false)
         }
 
@@ -108,7 +108,7 @@ const HomePage = () => {
         setIsSwitch(!isSwitch)
     }
 
-    const toEditPage = (url,id) => {
+    const toEditPage = (url, id) => {
         return (e) => {
             e.preventDefault()
             navigate(url, { state: { id: id, type: tab } })
@@ -119,11 +119,29 @@ const HomePage = () => {
         e.stopPropagation();
         if (tab === HOME_PAGE_TYPE_NEWS) {
             const res = await axios.put("/news/" + authId + "/" + id, { 'disploy': display })
-        } else if (tab === HOME_PAGE_TYPE_ARTICLE){
+        } else if (tab === HOME_PAGE_TYPE_ARTICLE) {
             const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
         }
         setDisployState(true)
     }
+
+    const checkScreenSize = () => {
+        if (window.innerWidth < 768) {
+            if (document.querySelector('.main-left')) {
+                document.querySelector('.main-left').style.display = 'none';
+                document.querySelector('.main-left-mobile').style.display = 'flex';
+                document.querySelector('.main-right').classList.add('main-right-mobile');
+            }
+        } else {
+            if (document.querySelector('.main-left')) {
+                document.querySelector('.main-left').style.display = 'flex';
+                document.querySelector('.main-left-mobile').style.display = 'none';
+                document.querySelector('.main-right').classList.remove('main-right-mobile');
+            }
+        }
+    }
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
 
     return (
         <div className='homePage'>
@@ -169,6 +187,28 @@ const HomePage = () => {
 
                         </div>
                     </div>
+                    <div className="main-left main-left-mobile">
+                        <div className="title row-align">
+                            <span>{user.userName?.slice(0, 1)}</span>
+                        </div>
+                        <div className="content">
+                            <div className="add row-align">
+                                {tab === HOME_PAGE_TYPE_NEWS &&
+                                    <Link to="/news/add" title='新增NEWS'>
+                                        <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                    </Link>
+                                }
+                                {tab === HOME_PAGE_TYPE_ARTICLE &&
+                                    <Link to="/article/add" title='新增文章'>
+                                        <i class="fa-solid fa-plus" style={{ color: "#3f4755" }}></i>
+                                    </Link>
+                                }
+                            </div>
+                            <div className="item row-align" onClick={e => handleTab(e, 1)}><i class="fa-regular fa-newspaper fa-xl" style={{ color: "#3f4755" }}></i></div>
+                            <div className="item row-align" onClick={e => handleTab(e, 2)}><i class="fa-regular fa-file-lines fa-xl" style={{ color: "#3f4755" }}></i></div>
+                            <div className="item row-align"><i class="fa-solid fa-gear fa-xl" style={{ color: "#3f4755" }}></i></div>
+                        </div>
+                    </div>
                     <div className="main-right">
                         {user ? (loading ? <Skeleton type="HomePageSkeleton_total" /> : <span className="main-right-title">全部共{data.length}筆</span>)
                             :
@@ -182,7 +222,7 @@ const HomePage = () => {
                                     else if (tab === HOME_PAGE_TYPE_ARTICLE) { url = "/article/edit/" + item._id }
                                     return (
                                         <div className="item" key={index}>
-                                            <div className='container' onClick={toEditPage(url,item._id)}>
+                                            <div className='container' onClick={toEditPage(url, item._id)}>
                                                 <div className="left">
                                                     <div className="cover">
                                                         <img src={item.cover} alt="" />
