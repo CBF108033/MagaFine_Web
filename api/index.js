@@ -53,3 +53,8 @@ app.use((error,req,res,next) => {
         message: errorMessage
     })
 })
+
+app.get('/api/v1/getip', (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    res.json({ ip: ip });
+});

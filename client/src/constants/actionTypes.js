@@ -9,3 +9,4 @@ export const TAB_KEY = "tab";
 export const HOME_PAGE_TYPE_NEWS = 1;
 export const HOME_PAGE_TYPE_ARTICLE = 2;
 export const API_URL_AWS = '';
+export const ENVIRONMENT = { status: 'production' };

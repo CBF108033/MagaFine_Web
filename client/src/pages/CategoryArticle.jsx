@@ -10,7 +10,8 @@ import useFetch from '../hooks/useFetch'
 import axios from 'axios'
 import Skeleton from '../components/Skeleton'
 import { parseToText, postTextLimit } from '../parse.js'
-import { API_URL_AWS } from '../constants/actionTypes.js'
+import { API_URL_AWS, ENVIRONMENT } from '../constants/actionTypes.js'
+import { NO_ARTICLE, NO_ARTICLE_AND_NO_API } from '../constants/string.js'
 
 const CategoryArticle = () => {
     //回首頁時到頁面最頂部
@@ -84,7 +85,18 @@ const CategoryArticle = () => {
                                         </div>
                                     )
                                     :
-                                    <div className="noResult">查不到相關的文章</div>
+                                    (ENVIRONMENT.status === 'production' ? //判斷是否為正式環境
+                                        (API_URL_AWS === '' ? //判斷是否有API_URL_AWS
+                                            <div>
+                                                <div className="noResult">{NO_ARTICLE_AND_NO_API}</div>
+                                                <img src={`${process.env.PUBLIC_URL}/images/offline-removebg.png`} style={{ width: '100%', margintop: '1rem' }} alt="offlineImg" />
+                                            </div>
+                                            :
+                                            <div className="noResult">{NO_ARTICLE}</div>
+                                        )
+                                        :
+                                        <div className="noResult">{NO_ARTICLE}</div>
+                                    )
                             }
                             {/* //判斷是否顯示mask，props.isMask為true，就顯示block，否則顯示none。 */}
                             <div className='mask' style={{ display: isOpenSearch ? 'block' : 'none', width: '100%', height: '100%', background: '#ffffff91', position: 'absolute' }}></div>

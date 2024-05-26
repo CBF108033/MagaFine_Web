@@ -1,11 +1,12 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 //import './home.scss'
 import Navbar from '../components/Navbar'
 import Searchbar from '../components/Searchbar'
 import Posts from '../components/Posts'
 import Footer from '../components/Footer'
 import './home.scss'
-import { TAB_KEY } from '../constants/actionTypes'
+import { API_URL_AWS, TAB_KEY, ENVIRONMENT } from '../constants/actionTypes'
+import axios from 'axios'
 
 const Home = () => {
   //回首頁時到頁面最頂部
@@ -14,6 +15,26 @@ const Home = () => {
   });
   const [isOpenSearch, setIsOpenSearch] = useState(false)
   localStorage.removeItem(TAB_KEY);
+
+  /**
+   * 取得client ip
+   * 
+   * @returns {string} ip
+   */
+  const info = async () => {
+    const info = await axios.get(API_URL_AWS + '/getip')
+    return info['data']['ip'];
+  }
+
+  useEffect(() => {
+    let ip = info();
+    if (ip === '127.0.0.1') {
+      ENVIRONMENT.status = 'development';
+    }else{
+      ENVIRONMENT.status = 'production';
+    }
+  }, [])
+
   return (
     <div className='home'>
       <div className="top">

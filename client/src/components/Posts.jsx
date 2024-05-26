@@ -3,11 +3,12 @@ import './posts.scss'
 import useFetch from '../hooks/useFetch'
 import Skeleton from './Skeleton'
 import { OptionsContext } from '../context/OptionsContext'
-import { API_URL_AWS, clear_Options } from '../constants/actionTypes'
+import { API_URL_AWS, ENVIRONMENT, clear_Options } from '../constants/actionTypes'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import parse from 'html-react-parser'
 import { parseToText, postTextLimit } from '../parse.js'
+import { NO_ARTICLE, NO_ARTICLE_AND_NO_API } from '../constants/string.js'
 
 const Posts = (props) => {
   const content = useRef(null)
@@ -106,7 +107,18 @@ const Posts = (props) => {
                 </div>
               )
               :
-              <div className="noResult">查不到相關的文章</div>
+              (ENVIRONMENT.status === 'production' ? //判斷是否為正式環境
+                (API_URL_AWS === '' ? //判斷是否有API_URL_AWS
+                  <div>
+                    <div className="noResult">{NO_ARTICLE_AND_NO_API}</div>
+                    <img src={`${process.env.PUBLIC_URL}/images/offline-removebg.png`} style={{ width: '100%', margintop: '1rem' }} alt="offlineImg" />
+                  </div>
+                  :
+                  <div className="noResult">{NO_ARTICLE}</div>
+                )
+                :
+                <div className="noResult">{NO_ARTICLE}</div>
+              )
           }
           {/* //判斷是否顯示mask，props.isMask為true，就顯示block，否則顯示none。 */}
           <div className='mask' style={{ display: props.isMask ? 'block' : 'none', width: '100%', height: '100%', background: '#ffffff91', position: 'absolute' }}></div>
