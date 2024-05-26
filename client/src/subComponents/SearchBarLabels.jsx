@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import useFetch from '../hooks/useFetch'
 import './searchBarLabels.scss'
 import Skeleton from '../components/Skeleton'
+import { API_URL_AWS } from '../constants/actionTypes'
 
 const SearchBarLabels = (props) => {
     let [labelSeleted, setLabelSeleted] = useState([])
@@ -10,7 +11,7 @@ const SearchBarLabels = (props) => {
 
     const [isOptionChanged, setisOptionChanged] = useState(false)
     let labels = []
-    const { data, loading, error } = useFetch('/labels/top10Labels/')
+    const { data, loading, error } = useFetch(API_URL_AWS + '/labels/top10Labels/')
     labels = data
 
     const labelClick = (item) => {

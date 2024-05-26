@@ -7,6 +7,7 @@ import "../subComponents/editorToolbar.scss"
 import { LoginContext } from '../context/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL_AWS } from '../constants/actionTypes';
 
 const AddNewPost = () => {
     const { user, dispatch } = useContext(LoginContext);
@@ -27,7 +28,7 @@ const AddNewPost = () => {
 
     useEffect(() => { //設定初始化的category，isInitialMount.current = true，第一次渲染時執行
         const fetchData = async () => {
-            const res = await axios.get("/articles/allArticlesType/all")
+            const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all")
             let category = await Promise.all(res.data.column.map(i => i.category))
             console.log(category);
             if (type === "專欄") {
@@ -46,7 +47,7 @@ const AddNewPost = () => {
     }, [])
     const selectorChange = async (e) => { //選擇專欄或系列時，category會跟著改變，並且預設第一個category
         // console.log(e.target.value);
-        const res = await axios.get("/articles/allArticlesType/all")
+        const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all")
         let category;
         if (e.target.value === "系列") {
             setType(e.target.value)
@@ -90,7 +91,7 @@ const AddNewPost = () => {
             return
         }
         try {
-            const res = await axios.post("/articles/" + user._id, state)
+            const res = await axios.post(API_URL_AWS + "/articles/" + user._id, state)
             navigate("/user/" + user._id + "/home")
         } catch (error) {
             alert(error.response.data.message)

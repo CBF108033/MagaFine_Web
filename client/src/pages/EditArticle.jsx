@@ -8,6 +8,7 @@ import axios from "axios";
 import "./editArticle.scss"
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginContext } from "../context/LoginContext";
+import { API_URL_AWS } from "../constants/actionTypes";
 // import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 export const Editor = () => {
@@ -15,7 +16,7 @@ export const Editor = () => {
     const locationAuthUrl = useLocation()
     const articleId = locationAuthUrl.pathname.split("/").pop()
     // console.log(articleId);
-    const { data, loading } = useFetch('/articles/' + articleId)
+    const { data, loading } = useFetch(API_URL_AWS + '/articles/' + articleId)
     // console.log(data.type);
 
     const { user, dispatch } = useContext(LoginContext);
@@ -46,7 +47,7 @@ export const Editor = () => {
 
     useEffect(() => { //設定初始化的category，isInitialMount.current = true，第一次渲染時執行
         const fetchData = async () => {
-            const res = await axios.get("/articles/allArticlesType/all")
+            const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all")
             let category = await Promise.all(res.data.column.map(i => i.category))
             if (data.type === "專欄") {
                 category = await Promise.all(res.data.column.map(i => i.category))
@@ -67,7 +68,7 @@ export const Editor = () => {
     const selectorChange = async (e) => { //選擇專欄或系列時，category會跟著改變，並且預設第一個category
         typeSelector.current.value = e.target.value;
         // const cur = e.target.value;//cur是選擇的專欄或系列，直接用e.target.value會有bug，所以先存成cur，因為底下value會吃到還沒改變的e.target.value，導致type還是原本的值
-        const res = await axios.get("/articles/allArticlesType/all")
+        const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all")
         let category;
         if (e.target.value === "系列") {
             category = await Promise.all(res.data.series.map(i => i.category))
@@ -115,13 +116,37 @@ export const Editor = () => {
             return
         }
         try {
-            const res = await axios.put("/articles/" + user._id + "/" + articleId, state)
+            const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + articleId, state)
             navigate("/user/" + user._id + "/home")
         } catch (error) {
             // alert(error.response.data.message)
             alert("請重新登入")
         }
     }
+    /** TODO 自動儲存功能(10/28未完成) */ 
+    // setInterval(async () => {
+    //     state = { ...state, ['disploy']: false }
+    //     // 替換空格為特殊符號，要四格空白才能換行
+    //     state.content = state.content?.replace(/\s{8}|\t\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+    //     state.content = state.content?.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+    //     if (state.title !== "" && state.content !== "") {
+    //         try {
+    //             const res = await axios.put("/articles/" + user._id + "/" + articleId, state)
+    //             setTimeout(() => {
+    //                 if (document.querySelector(".saving")) {
+    //                     document.querySelector(".saving").innerHTML = "儲存中..."
+    //                 }
+    //             }, 1000);
+    //             if (document.querySelector(".saving")) {
+    //                 document.querySelector(".saving").innerHTML = ""
+    //             }
+    //         } catch (error) {
+    //             // alert(error)
+    //             alert("請重新登入")
+    //         }
+    //     }
+    // }, 10000);
+
     const addHashtag = async (e) => {
         e.stopPropagation();
         if (e.key === 'Enter') {
@@ -176,6 +201,7 @@ export const Editor = () => {
                 </div>
             </div>
             <main>
+                <div className="saving"></div>
                 <div className="selectors">
                     <div className="selector">
                         <div className="SelectTitle">類型</div>
@@ -247,7 +273,7 @@ export const Editor = () => {
                 <div className="uploadPhoto">
                     <div className="wrapper">
                         <span>封面圖片上傳</span>
-                        <input type="text" id='photo' onChange={e=>handleInputPhotos(e)} ref={coverUpload}/>
+                        <input type="text" id='photo' onChange={e => handleInputPhotos(e)} ref={coverUpload} />
                     </div>
                     <img src={state?.cover || data.cover} alt="封面圖片" />
                 </div>

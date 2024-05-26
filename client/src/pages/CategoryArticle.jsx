@@ -10,6 +10,7 @@ import useFetch from '../hooks/useFetch'
 import axios from 'axios'
 import Skeleton from '../components/Skeleton'
 import { parseToText, postTextLimit } from '../parse.js'
+import { API_URL_AWS } from '../constants/actionTypes.js'
 
 const CategoryArticle = () => {
     //回首頁時到頁面最頂部
@@ -21,7 +22,7 @@ const CategoryArticle = () => {
     const ArticleData = useLocation()
     // console.log(ArticleData.state)
 
-    const searchUrl = `/articles?${ArticleData.state && "category=" + ArticleData.state }`
+    const searchUrl = `${API_URL_AWS}/articles?${ArticleData.state && "category=" + ArticleData.state }`
     // console.log(searchUrl)
     const { data, loading, error } = useFetch(searchUrl)
 
@@ -30,7 +31,7 @@ const CategoryArticle = () => {
     useEffect(() => {
         setAuthLoading(true)
         const fetchData = async () => {
-            const userData = await Promise.all(data.map(async (item, i) => { return await axios.get(`/users/find/${item.AuthorId}`) }))
+            const userData = await Promise.all(data.map(async (item, i) => { return await axios.get(`${API_URL_AWS}/users/find/${item.AuthorId}`) }))
             setAuthData(userData)
             setAuthLoading(false)
         }

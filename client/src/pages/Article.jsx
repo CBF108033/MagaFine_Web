@@ -9,7 +9,7 @@ import axios from 'axios'
 import parse from 'html-react-parser'
 import { LoginContext } from '../context/LoginContext.js'
 import { OptionsContext } from '../context/OptionsContext'
-import { new_Options } from '../constants/actionTypes'
+import { API_URL_AWS, new_Options } from '../constants/actionTypes'
 
 const Article = () => {
   const locationArticleUrl = useLocation()
@@ -29,11 +29,11 @@ const Article = () => {
         isInitialMount.current = false;
         // console.log('first render')
         // 初次渲染時就抓取一次資料
-        let response = await axios.get(`/articles/${articleId}`)
+        let response = await axios.get(`${API_URL_AWS}/articles/${articleId}`)
         setData(response.data)
       } else {
         // 根據特定條件重新渲染時才抓取資料
-        let response = await axios.get(`/articles/${articleId}`)
+        let response = await axios.get(`${API_URL_AWS}/articles/${articleId}`)
         setData(response.data)
       }
     }
@@ -42,7 +42,7 @@ const Article = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userData = await axios.get(`/users/find/${data.AuthorId}`)
+      const userData = await axios.get(`${API_URL_AWS}/users/find/${data.AuthorId}`)
       setAuthData(userData.data)
     }
     fetchData()
@@ -52,7 +52,7 @@ const Article = () => {
     if (!user) return alert('請先登入')
     else {
       try {
-        await axios.put(`/users/like/${user._id}/${articleId}`)
+        await axios.put(`${API_URL_AWS}/users/like/${user._id}/${articleId}`)
       } catch (err) {
         console.log(err)
       }

@@ -6,6 +6,7 @@ import useFetch from '../hooks/useFetch';
 import Skeleton from '../components/Skeleton';
 import axios from 'axios';
 import parse from 'html-react-parser'
+import { API_URL_AWS } from '../constants/actionTypes';
 
 window.addEventListener('load', () => {
     const grid = document.getElementById('grid');
@@ -24,12 +25,12 @@ window.addEventListener('load', () => {
 const News = () => {
     let [authLoading, setAuthLoading] = useState(false)
     const [authData, setAuthData] = useState([])
-    let { data, isLoading, error } = useFetch('/news')
+    let { data, isLoading, error } = useFetch(API_URL_AWS + '/news')
 
     useEffect(() => {
         setAuthLoading(true)
         const fetchData = async () => {
-            const userData = await Promise.all(data.map(async (item, i) => { return await axios.get(`/users/find/${item.AuthorId}`) }))
+            const userData = await Promise.all(data.map(async (item, i) => { return await axios.get(`${API_URL_AWS}/users/find/${item.AuthorId}`) }))
             setAuthData(userData)
             setAuthLoading(false)
         }

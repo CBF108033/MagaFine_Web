@@ -3,7 +3,7 @@ import './posts.scss'
 import useFetch from '../hooks/useFetch'
 import Skeleton from './Skeleton'
 import { OptionsContext } from '../context/OptionsContext'
-import { clear_Options } from '../constants/actionTypes'
+import { API_URL_AWS, clear_Options } from '../constants/actionTypes'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import parse from 'html-react-parser'
@@ -42,14 +42,14 @@ const Posts = (props) => {
   const [authData, setAuthData] = useState([])
   const [authLoading, setAuthLoading] = useState(false)
   // dispatch({type: clear_Options})
-  const searchUrl = `/articles?${inputTextFiler !== '' ? "searchText=" + inputText + "&" : ""}${hashtag.length !== 0 ? "hashtags=" + hashtag + "&" : ""}${category.length !== 0 ? "category=" + category : ""}`
+  const searchUrl = `${API_URL_AWS}/articles?${inputTextFiler !== '' ? "searchText=" + inputText + "&" : ""}${hashtag.length !== 0 ? "hashtags=" + hashtag + "&" : ""}${category.length !== 0 ? "category=" + category : ""}`
   // console.log(searchUrl)
   const { data, loading, error } = useFetch(props.authorUrl ? props.authorUrl : searchUrl)//props.authorUrl是User頁面傳過來的props
 
   useEffect(() => {
     setAuthLoading(true)
     const fetchData = async () => {
-      const userData = await Promise.all(data.map(async (item, i) => { return await axios.get(`/users/find/${item.AuthorId}`) }))
+      const userData = await Promise.all(data.map(async (item, i) => { return await axios.get(`${API_URL_AWS}/users/find/${item.AuthorId}`) }))
       setAuthData(userData)
       setAuthLoading(false)
     }

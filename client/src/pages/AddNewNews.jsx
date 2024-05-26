@@ -7,6 +7,7 @@ import "../subComponents/editorToolbar.scss"
 import { LoginContext } from '../context/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL_AWS } from '../constants/actionTypes';
 
 const AddNewNews = () => {
     const { user, dispatch } = useContext(LoginContext);
@@ -47,7 +48,7 @@ const AddNewNews = () => {
             return
         }
         try {
-            const res = await axios.post("/news/" + user._id, state)
+            const res = await axios.post(API_URL_AWS + "/news/" + user._id, state)
             navigate("/user/" + user._id + "/home")
         } catch (error) {
             alert(error.response.data.message)

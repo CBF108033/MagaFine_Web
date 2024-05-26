@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
 import axios from 'axios'
 import { LoginContext } from '../context/LoginContext'
+import { API_URL_AWS } from '../constants/actionTypes'
 
 const User = () => {
   const authInfo = useRef(null)
@@ -33,7 +34,7 @@ const User = () => {
 
   }, [])
 
-  const { data, loading, error } = useFetch(`/users/find/${authId}`)//{}寫成[]會造成object is not iterable
+  const { data, loading, error } = useFetch(`${API_URL_AWS}/users/find/${authId}`)//{}寫成[]會造成object is not iterable
   const { user, dispatch } = useContext(LoginContext);
 
   const toHomePage = () => {
@@ -71,7 +72,7 @@ const User = () => {
             {loading ? <div style={{ display: 'flex', borderBottom: '1px dashed #E0E0E0', justifyContent: 'center' }}><div className='userTitle skeletonStyle' style={{ width: '100px', height: '1.5em', marginBottom: '20px', background: '#E0E0E0' }}></div></div>
               : <div className='userTitle'>{user?._id === authId ? '我' : data.userName}的文章</div>
             }
-            <Posts userPost={{ justifyContent: 'flex-start' }} authorUrl={`/articles/findUser/${authId}`} />
+            <Posts userPost={{ justifyContent: 'flex-start' }} authorUrl={`${API_URL_AWS}/articles/findUser/${authId}`} />
           </div>
         </div>
 

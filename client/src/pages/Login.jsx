@@ -3,7 +3,7 @@ import './login.scss'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { LoginContext } from '../context/LoginContext'
-import { login_failure, login_success, start_login } from '../constants/actionTypes'
+import { API_URL_AWS, login_failure, login_success, start_login } from '../constants/actionTypes'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
@@ -27,7 +27,7 @@ const Login = () => {
     //loading，讓按鈕變成loading，不讓使用者重複點擊，等待後端回傳資料，再讓使用者點擊，不然會有bug，
     //因為我們是用context，所以不用setState(非同步的)，直接dispatch，讓reducer(同步)去改變state，這樣就不會有bug。
     try {
-      const res = await axios.post("/auth/login", loginData)
+      const res = await axios.post(API_URL_AWS + "/auth/login", loginData)
       dispatch({ type: login_success, payload: res.data.userDetails })
       //console.log(res)
       navigate(registerSuccess?.state?.from||"/")

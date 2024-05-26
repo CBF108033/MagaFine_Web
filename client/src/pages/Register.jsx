@@ -4,6 +4,7 @@ import './register.scss'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Link, useNavigate } from 'react-router-dom'
+import { API_URL_AWS } from '../constants/actionTypes'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ const Register = () => {
     try {
       if(!error){
         const res = await axios.post("/auth/register", registerData)
-        navigate("/login", res)
+        navigate(API_URL_AWS + "/login", res)
       }
     } catch (error) {
       setError(error.response.data.message)

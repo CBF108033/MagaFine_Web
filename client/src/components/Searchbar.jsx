@@ -3,7 +3,7 @@ import './searchbar.scss'
 import useFetch from '../hooks/useFetch'
 import SearchBarLabels from '../subComponents/SearchBarLabels'
 import { OptionsContext } from '../context/OptionsContext'
-import { new_Options } from '../constants/actionTypes'
+import { API_URL_AWS, new_Options } from '../constants/actionTypes'
 import { useNavigate } from 'react-router-dom'
 
 const Searchbar = (props) => {
@@ -22,7 +22,7 @@ const Searchbar = (props) => {
     const navigate = useNavigate()
     props.isOpen(openSearchView) //將openSearchView傳給父層，讓父層Posts判斷是否顯示遮罩
 
-    const { data, isLoading, error } = useFetch('/articles/allArticlesType/all')
+    const { data, isLoading, error } = useFetch(API_URL_AWS + '/articles/allArticlesType/all')
     // console.log(data)
 
     const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)

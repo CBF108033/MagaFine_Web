@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import './navbar.scss'
 import { Link, useNavigate } from "react-router-dom"
 import { LoginContext } from '../context/LoginContext.js'
-import { logout, new_Options } from '../constants/actionTypes'
+import { API_URL_AWS, logout, new_Options } from '../constants/actionTypes'
 import useFetch from '../hooks/useFetch'
 import { OptionsContext } from '../context/OptionsContext'
 // import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
@@ -36,8 +36,8 @@ const Navbar = () => {
         navigate("/")
     }
 
-    const userUrl = '/users/' + user?._id || null
-    const { data, isLoading, error } = useFetch(user ? userUrl : '/articles')
+    const userUrl = API_URL_AWS + '/users/' + user?._id || null
+    const { data, isLoading, error } = useFetch(user ? userUrl : API_URL_AWS + '/articles')
     // console.log('資料是: ', data)
 
     const linkTo = (e, c) => {

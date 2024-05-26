@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { parseToText, postTextLimit } from '../parse.js'
 import Skeleton from '../components/Skeleton'
 import { LoginContext } from '../context/LoginContext'
-import { HOME_PAGE_TYPE_ARTICLE, HOME_PAGE_TYPE_NEWS, TAB_KEY } from '../constants/actionTypes'
+import { API_URL_AWS, HOME_PAGE_TYPE_ARTICLE, HOME_PAGE_TYPE_NEWS, TAB_KEY } from '../constants/actionTypes'
 
 const HomePage = () => {
     let [data, setData] = useState([])
@@ -30,8 +30,8 @@ const HomePage = () => {
     const fetchArticleData = async () => {
         try {
             setLoading(true)
-            if (tab === HOME_PAGE_TYPE_NEWS) { allArticle = await axios.get('/news/myself/' + user?._id) }
-            else if (tab === HOME_PAGE_TYPE_ARTICLE) { allArticle = await axios.get('/articles/myself/' + user?._id) }
+            if (tab === HOME_PAGE_TYPE_NEWS) { allArticle = await axios.get(API_URL_AWS + '/news/myself/' + user?._id) }
+            else if (tab === HOME_PAGE_TYPE_ARTICLE) { allArticle = await axios.get(API_URL_AWS + '/articles/myself/' + user?._id) }
             setData(allArticle?.data)
             // console.log(allArticle?.data);
             setLoading(false)
@@ -82,8 +82,8 @@ const HomePage = () => {
             "確定要刪除文章嗎? 一旦刪除即無法復原!"
         )
         if (confirmBox === true) {
-            if (tab === HOME_PAGE_TYPE_NEWS) { deleteItem = await axios.delete('/news/' + authId + '/' + id) }
-            else if (tab === HOME_PAGE_TYPE_ARTICLE) { deleteItem = await axios.delete('/articles/' + authId + '/' + id) }
+            if (tab === HOME_PAGE_TYPE_NEWS) { deleteItem = await axios.delete(API_URL_AWS + '/news/' + authId + '/' + id) }
+            else if (tab === HOME_PAGE_TYPE_ARTICLE) { deleteItem = await axios.delete(API_URL_AWS + '/articles/' + authId + '/' + id) }
             // console.log(deleteItem);
             // console.log('/articles/' + authId + ' /' + id);
             setDeleteState(true)
@@ -119,9 +119,9 @@ const HomePage = () => {
     const disploy = async (e, id, display) => {
         e.stopPropagation();
         if (tab === HOME_PAGE_TYPE_NEWS) {
-            const res = await axios.put("/news/" + authId + "/" + id, { 'disploy': display })
+            const res = await axios.put(API_URL_AWS + "/news/" + authId + "/" + id, { 'disploy': display })
         } else if (tab === HOME_PAGE_TYPE_ARTICLE) {
-            const res = await axios.put("/articles/" + authId + "/" + id, { 'disploy': display })
+            const res = await axios.put(API_URL_AWS + "/articles/" + authId + "/" + id, { 'disploy': display })
         }
         setDisployState(true)
     }

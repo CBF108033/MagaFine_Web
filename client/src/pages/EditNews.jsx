@@ -8,12 +8,13 @@ import axios from "axios";
 import "./editArticle.scss"
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginContext } from "../context/LoginContext";
+import { API_URL_AWS } from "../constants/actionTypes";
 
 export const Editor = () => {
     const navigate = useNavigate()
     const locationAuthUrl = useLocation()
     const articleId = locationAuthUrl.pathname.split("/").pop()
-    const { data, loading } = useFetch('/news/' + articleId)
+    const { data, loading } = useFetch(API_URL_AWS + '/news/' + articleId)
     // console.log(data);
 
     const { user, dispatch } = useContext(LoginContext);
@@ -59,7 +60,7 @@ export const Editor = () => {
             return
         }
         try {
-            const res = await axios.put("/news/" + user._id + "/" + articleId, state)
+            const res = await axios.put(API_URL_AWS + "/news/" + user._id + "/" + articleId, state)
             navigate("/user/" + user._id + "/home")
         } catch (error) {
             alert("請重新登入")
