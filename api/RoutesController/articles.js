@@ -5,6 +5,7 @@ import { updateLabelExist } from "./labels.js";
 import Label from "../models/Label.js";
 import Column from "../models/Column.js";
 import Series from "../models/Series.js";
+import { ObjectId } from 'mongodb';
 
 export const createArticle = async (req, res, next) => {
     const authorID = req.params.userID;
@@ -29,7 +30,17 @@ export const createArticle = async (req, res, next) => {
 
 export const getArticles = async (req, res, next) => {
     try {
-        const article = await Article.findById(req.params.id);
+        // const query = { id: req.params.id } || { parentId: req.params.id };
+        const id = req.params.id;
+        const isValidObjectId = ObjectId.isValid(id);
+        const query = {
+            $or: [
+                isValidObjectId ? { _id: new ObjectId(id) } : null,
+                { parentId: id }
+            ].filter(Boolean) // 過濾掉 null 值
+        };
+        // const article = await Article.findById(req.params.id);
+        const article = await Article.find(query);
         res.status(200).json(article);
     } catch (error) {
         next(error)
@@ -42,7 +53,8 @@ export const getAllArticles = async (req, res, next) => {
     const hashtagsQuery = hashtags && { hashtags: { "$in": hashtags.split(',') } } || {};
     const categoryQuery = category && { category: { "$in": category.split(',') } } || {};
     const disployQuery = { disploy: true } || {};
-    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery, ...disployQuery };
+    const parentArticleQuery = { parentId: "" } || {};
+    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery, ...disployQuery, ...parentArticleQuery };
     try {
         const articles = await Article.find(query).sort({ createdAt: -1 });
         res.status(200).json(articles);
@@ -60,7 +72,7 @@ export const getUserArticles = async (req, res, next) => {
                 return Article.findById(articleID)
             }))
             //刪除未發佈的文章
-            articleList = articleList.filter(element => element.disploy === true);
+            articleList = articleList.filter(element => element.disploy === true).sort((a, b) => b.createdAt - a.createdAt);
             res.status(200).json(articleList);
         } catch (error) {
             next(errorMessage(500, "找不到此該作者的文章", error))

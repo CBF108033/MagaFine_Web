@@ -8,7 +8,7 @@ const ArticleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    cover:{
+    cover: {
         type: String,
         default: "https://images.unsplash.com/photo-1681397016161-fcdcaf7c2df6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80",
         required: true
@@ -50,6 +50,18 @@ const ArticleSchema = new mongoose.Schema({
         date: { type: Date, default: Date },
         userId: { type: String, required: true },
     }],
+    parentId: {//'母文章Id'
+        type: String,
+        default: ""
+    },
+    lang: {//'語言'
+        type: String,
+        default: ""
+    },
+    audioUrl: {//'音樂'
+        type: String,
+        default: ""
+    },
 }, { timestamps: true });
 
 export default mongoose.mongoose.model("Article", ArticleSchema)

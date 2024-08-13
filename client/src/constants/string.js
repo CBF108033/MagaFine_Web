@@ -1,2 +1,11 @@
 export const NO_ARTICLE = "查不到相關的文章";
 export const NO_ARTICLE_AND_NO_API = "The website manager is offline...";
+export const LANG_EN = "en";
+export const LANG_ZH = "zh";
+export const LANG_KR = "kr";
+export const LANG_JP = "jp";
+export const LABEL_ORIGINAL = "ORI";
+export const LABEL_ENGLISH = "EN";
+export const LABEL_KOREAN = "한국어";
+export const LABEL_JAPANESE = "日本語";
+export const LABEL_CHINESE = "中文";
