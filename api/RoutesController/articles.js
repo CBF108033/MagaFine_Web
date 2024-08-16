@@ -53,8 +53,9 @@ export const getAllArticles = async (req, res, next) => {
     const hashtagsQuery = hashtags && { hashtags: { "$in": hashtags.split(',') } } || {};
     const categoryQuery = category && { category: { "$in": category.split(',') } } || {};
     const disployQuery = { disploy: true } || {};
+    const readAccessQuery = { readAccess: '' } || {};
     const parentArticleQuery = { parentId: "" } || {};
-    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery, ...disployQuery, ...parentArticleQuery };
+    const query = { ...withquery, ...searchTextQuery, ...hashtagsQuery, ...categoryQuery, ...disployQuery, ...readAccessQuery, ...parentArticleQuery };
     try {
         const articles = await Article.find(query).sort({ createdAt: -1 });
         res.status(200).json(articles);
@@ -73,6 +74,8 @@ export const getUserArticles = async (req, res, next) => {
             }))
             //刪除未發佈的文章
             articleList = articleList.filter(element => element.disploy === true).sort((a, b) => b.createdAt - a.createdAt);
+            //刪除僅限管理員閱讀的文章
+            articleList = articleList.filter(element => element.readAccess !== 'admin');
             res.status(200).json(articleList);
         } catch (error) {
             next(errorMessage(500, "找不到此該作者的文章", error))

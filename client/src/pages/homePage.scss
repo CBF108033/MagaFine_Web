@@ -213,7 +213,7 @@
                                 .unlock,
                                 .lock {
                                     display: block !important;
-                                    padding: 10px;
+                                    padding: 8px 8px;
                                     border-radius: 50%;
                                     transition: 0.2s;
                                 }
@@ -228,9 +228,28 @@
                                     border-radius: 50%;
                                 }
 
+                                .invisible,
+                                .visible {
+                                    display: block !important;
+                                    padding: 8px 8px;
+                                    border-radius: 50%;
+                                    transition: 0.2s;
+                                    font-size: 16px;
+                                }
+
+                                .invisible:hover {
+                                    background: rgba(0, 0, 0, 0.1);
+                                    border-radius: 50%;
+                                }
+
+                                .visible:hover {
+                                    background: rgba(236, 189, 174, 0.722);
+                                    border-radius: 50%;
+                                }
+
                                 .delete {
                                     display: none;
-                                    padding: 10px;
+                                    padding: 8px 8px;
                                     border-radius: 50%;
                                     transition: 0.2s;
                                     color: #3f4755;

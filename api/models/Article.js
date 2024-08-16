@@ -62,6 +62,10 @@ const ArticleSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    readAccess: {//'瀏覽限制'
+        type: String,
+        default: ""
+    },
 }, { timestamps: true });
 
 export default mongoose.mongoose.model("Article", ArticleSchema)

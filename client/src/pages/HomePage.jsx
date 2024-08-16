@@ -12,6 +12,7 @@ const HomePage = () => {
     let [data, setData] = useState([])
     const [deleteState, setDeleteState] = useState(false)
     const [disployState, setDisployState] = useState(false)
+    const [visibleState, setVisibleState] = useState(false)
     let [loading, setLoading] = useState(false)
     let tabNow = localStorage.getItem(TAB_KEY) ? localStorage.getItem("tab") : localStorage.setItem("tab", "2")
     let [tab, setTab] = useState(parseInt(tabNow))
@@ -75,6 +76,13 @@ const HomePage = () => {
         }
     }, [disployState])
 
+    useEffect(() => {
+        if (visibleState && user) {
+            fetchArticleData()
+            setVisibleState(false)
+        }
+    }, [visibleState])
+
     const deleteArticle = async (e, id) => {
         e.preventDefault();
         e.stopPropagation();
@@ -124,6 +132,12 @@ const HomePage = () => {
             const res = await axios.put(API_URL_AWS + "/articles/" + authId + "/" + id, { 'disploy': display })
         }
         setDisployState(true)
+    }
+
+    const visible = async (e, id, visible) => {
+        e.stopPropagation();
+        const res = await axios.put(API_URL_AWS + "/articles/" + authId + "/" + id, { 'readAccess': visible })
+        setVisibleState(true)
     }
 
     const checkScreenSize = () => {
@@ -252,6 +266,17 @@ const HomePage = () => {
                                                         <>
                                                             <div className="unlock" onClick={e => disploy(e, item._id, false)}>
                                                                 <i className="fa-solid fa-unlock fa-xl" style={{ color: '#78c046' }}></i>
+                                                            </div>
+                                                        </>
+                                                    }
+                                                    {!item.readAccess ?
+                                                        <>
+                                                            <div className="visible" onClick={e => visible(e, item._id, 'admin')}>
+                                                                <i className="fa-solid fa-eye" style={{ color: "#3f4755" }}></i>
+                                                            </div></> :
+                                                        <>
+                                                            <div className="invisible" onClick={e => visible(e, item._id, '')}>
+                                                                <i className="fa-solid fa-eye-slash" style={{ color: '#c04646' }}></i>
                                                             </div>
                                                         </>
                                                     }
