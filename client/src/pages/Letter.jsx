@@ -85,14 +85,16 @@ const Letter = () => {
         setTimeout(() => {
             const audio = new Audio('/media/paper-flip.mp3');
             audio.play();
-        }, 900);
+        }, 1500);
+
+        setTimeout(() => {
+            paperFront.style.backgroundImage = `url(${letterUser?.letterImagesTop || '../../images/sampleLetterTop.jpg'})`;
+        }, 2100);
 
         // 旋轉一半時（大約1.5秒後）切換背景圖片
         setTimeout(() => {
             paperFront.classList.add('halfway');
-            let paperFrontHalfway = document.querySelector('.paper-front.halfway');
-            paperFrontHalfway.style.backgroundImage = `url(${letterUser?.letterImagesTop || '../../images/sampleLetterTop.jpg'})`;
-        }, 1500);
+        }, 2300);
 
         // 信紙展開後，隱藏信封，顯示信件，並放大信件
         setTimeout(() => {
