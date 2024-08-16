@@ -60,7 +60,7 @@ export const letterLogin = async (req, res, next) => {
         if (letterLoginData.account === "" || letterLoginData.password === ""){
             return next(errorMessage(404, "please enter your NAME and KEY"))
         }
-        const letterUserData = await LetterUser.findOne({ email: letterLoginData.account.trim().toLowerCase() }) || await LetterUser.findOne({ userName: letterLoginData.account.trim().toLowerCase() });
+        const letterUserData = await LetterUser.findOne({ email: letterLoginData.account?.trim().toLowerCase() }) || await LetterUser.findOne({ userName: letterLoginData.account?.trim().toLowerCase() });
         if (!letterUserData) return (next(errorMessage(404,  "NAME not exist")))
         if (letterLoginData.password !== letterUserData.password) return (next(errorMessage(400, "Wrong Key")))
 
