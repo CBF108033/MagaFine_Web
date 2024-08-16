@@ -12,6 +12,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CategoryArticle from "./pages/CategoryArticle";
 import AddNewPost from "./pages/AddNewPost";
 import AddNewNews from "./pages/AddNewNews";
+import Letter from "./pages/Letter";
+import LetterLogin from "./pages/LetterLogin";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           <Route path="/news" element={<News />}></Route>
           <Route path="/news/edit/:articleId" element={<EditorConvertToHTMLForNews />}></Route>
           <Route path="/news/add" element={<AddNewNews />}></Route>
+          <Route path="/letter" element={<Letter />}></Route>
+          <Route path="/letterLogin" element={<LetterLogin />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
