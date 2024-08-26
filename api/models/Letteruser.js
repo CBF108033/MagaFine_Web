@@ -33,6 +33,10 @@ const letteruserSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'user'
+    },
+    dataSource: {
+        type: String,
+        default: ''
     }
 }, { timestamps: true })
 // 在MongoDB 中的集合名稱為letteruser，而在Mongoose 模型中使用了Letteruser。這會導致Mongoose 預設地將模型名稱變成小寫並加上複數形式，即letterusers，從而尋找名為letterusers的集合，而不是letteruser，所以可以在定義模型時明確指定集合名稱。
