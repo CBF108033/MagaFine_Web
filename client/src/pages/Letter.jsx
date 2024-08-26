@@ -136,7 +136,7 @@ const Letter = () => {
             letterFullImg.style.width = `${widthPaperBottom2 / 1.81}px`;
             letterBox.style.display = 'none';
             const audio = new Audio('/media/HelloGoodbye&Hello_piano.mp3');
-            audio.volume = 0.3;
+            audio.volume = 0.5;
             audio.loop = true;
             audio.play();
         }, 3000);
