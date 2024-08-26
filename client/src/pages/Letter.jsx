@@ -166,7 +166,7 @@ const Letter = () => {
     const checkScreenSize = () => {
         const letter = document.querySelector('.letter');
         const letterFullImg2 = document.querySelector('.letter-full img');
-        if (window.innerWidth >= 768 && letterFullImg2.clientHeight > window.innerHeight) {
+        if (letterFullImg2.clientHeight > window.innerHeight) {
             letter.style.height = `${letterFullImg2.clientHeight}px`;
             letterFullImg2.style.top = 'initial';
         } else {
