@@ -102,7 +102,7 @@ const Letter = () => {
             letterFull.style.display = 'flex';
             letterFullImg.style.width = `${widthPaperBottom2 / 1.81}px`;
             letterBox.style.display = 'none';
-            const audio = new Audio('/media/milet-anytime-anywhere.mp3');
+            const audio = new Audio('/media/HelloGoodbye&Hello_piano.mp3');
             audio.volume = 0.3;
             audio.loop = true;
             audio.play();
@@ -168,7 +168,7 @@ const Letter = () => {
             </div>
             <div className='download' style={{ display: 'none' }} ref={downloadRef}>
                 {/* <span class="material-symbols-outlined"> */}
-                    <a class="material-symbols-outlined" target='_blank' href='https://drive.google.com/file/d/1v_nBMl2yuLDlZtJd4JIHIu-tw0ry4W2g/view?usp=sharing'>
+                    <a class="material-symbols-outlined" target='_blank' href={letterUser?.dataSource}>
                         download
                     </a>
                 {/* </span> */}
