@@ -34,7 +34,7 @@ const Letter = () => {
     }, [letterUser])
 
     useEffect(() => {
-        if (letterUser?.unlockCount !== 0) {
+        if (letterUser?.unlockDate !== null ) {
             unlockCount = letterUser?.unlockCount + 1;
         } else {
             firstUnlock = new Date();
