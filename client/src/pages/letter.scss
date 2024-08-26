@@ -2,7 +2,7 @@
 
 .letter {
     height: 100vh;
-    background-color: #dde8dc;
+    background-color: #3b3d3a;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -12,7 +12,7 @@
     .letter-tip {
         width: 100%;
         height: 100%;
-        background: #828a81;
+        background: #3b3d3a;
         position: absolute;
         z-index: 100;
         display: flex;
@@ -27,7 +27,7 @@
             align-items: center;
             flex-direction: column;
             color: black;
-            background: #f1ffe6;
+            background: #dbdbda;
             border-radius: 20px;
             box-shadow: 0px 0px 10px 5px #ffffff7d;
             cursor: pointer;
@@ -225,7 +225,7 @@
         a {
             text-decoration: none;
             font-size: 25px;
-            color: #514a4a;
+            color: #d7c8c8;
         }
     }
 
