@@ -30,6 +30,14 @@ const letteruserSchema = new mongoose.Schema({
         type: Date,
         default: ''
     },
+    unlockCount: {
+        type: Number,
+        default: ''
+    },
+    latestUnlockDate: {
+        type: Date,
+        default: ''
+    },
     role: {
         type: String,
         default: 'user'

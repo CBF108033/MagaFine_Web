@@ -37,6 +37,18 @@ export const getLetterUserInfo = async (req, res, next) => {
     }
 }
 
+export const updatedLetterUserInfo = async (req, res, next) => {
+    try {
+        const updatedUser = await LetterUser.findByIdAndUpdate(req.params.userID, {
+            $set: req.body
+        }, { new: true });
+        res.status(200).json(updatedUser);
+    }
+    catch (error) {
+        next(errorMessage(500, "更新用戶失敗", error))
+    }
+}
+
 export const deleteLetterUser = async (req, res, next) => {
     try {
         await LetterUser.findByIdAndDelete(req.params.userID);

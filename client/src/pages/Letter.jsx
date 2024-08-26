@@ -3,6 +3,8 @@ import './letter.scss'
 import { LetterLoginContext } from '../context/LetterLoginContext';
 import { useNavigate } from 'react-router-dom';
 import TypewriterEffect from '../subComponents/TypewriterEffect';
+import { API_URL_AWS, login_success } from '../constants/actionTypes';
+import axios from 'axios';
 
 const Letter = () => {
     const [isLetterOpen, setIsLetterOpen] = useState(false);
@@ -18,8 +20,11 @@ const Letter = () => {
     const downloadRef = useRef(null);
     const [isTypewriterVisible, setIsTypewriterVisible] = useState(false);
     const audioTyping = useRef(new Audio('/media/typing.mp3')).current; //用useRef包裝audio元素，使其在每次渲染時不會被重新創建，在整個元件的生命週期中都是唯一的
-    const { letterUser } = useContext(LetterLoginContext)
+    const { letterUser, dispatch } = useContext(LetterLoginContext)
     const navigate = useNavigate();
+    let unlockCount = null;
+    let latestUnlockDate = null;
+    let firstUnlock = null;
 
     useEffect(() => {
         if (!letterUser) {
@@ -28,10 +33,38 @@ const Letter = () => {
         }
     }, [letterUser])
 
+    useEffect(() => {
+        if (letterUser?.unlockCount !== 0) {
+            unlockCount = letterUser?.unlockCount + 1;
+        } else {
+            firstUnlock = new Date();
+            unlockCount = 1;
+        }
+        latestUnlockDate = new Date();
+    }, [letterUser])
+
+    const save = async () => {
+        if (firstUnlock) {
+            const res = await axios.put(API_URL_AWS + '/letterusers/' + letterUser?._id,
+                { 'unlockCount': unlockCount, 'latestUnlockDate': latestUnlockDate, 'unlockDate': firstUnlock }
+            )
+            dispatch({ type: login_success, payload: res.data })
+        } else {
+            const res = await axios.put(API_URL_AWS + '/letterusers/' + letterUser?._id,
+                { 'unlockCount': unlockCount, 'latestUnlockDate': latestUnlockDate }
+            )
+            dispatch({ type: login_success, payload: res.data })
+        }
+    }
+
+    useEffect(() => {
+        letterUser && save()
+    }, [unlockCount, latestUnlockDate, firstUnlock])
+
     const readyToGo = () => {
         letterTipRef.current.style.display = 'none';
         setIsTypewriterVisible(true);
-        
+
         audioTyping.volume = 1;
         audioTyping.currentTime = 5;
         audioTyping.play();
@@ -150,7 +183,7 @@ const Letter = () => {
             <div className='letter-tip' ref={letterTipRef}>
                 <div className='button' onClick={() => readyToGo()}>
                     <span>For {letterUser?.userName || 'you'}</span>
-                    <span style={{fontSize: '20px'}}>touch to start</span>
+                    <span style={{ fontSize: '20px' }}>touch to start</span>
                 </div>
             </div>
             {isTypewriterVisible && <TypewriterEffect />}
@@ -168,9 +201,9 @@ const Letter = () => {
             </div>
             <div className='download' style={{ display: 'none' }} ref={downloadRef}>
                 {/* <span class="material-symbols-outlined"> */}
-                    <a class="material-symbols-outlined" target='_blank' href={letterUser?.dataSource}>
-                        download
-                    </a>
+                <a class="material-symbols-outlined" target='_blank' href={letterUser?.dataSource}>
+                    download
+                </a>
                 {/* </span> */}
             </div>
             {/* Sound Effect by <a href="https://pixabay.com/zh/users/floraphonic-38928062/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=196721">floraphonic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=196721">Pixabay</a> */}

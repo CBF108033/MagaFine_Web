@@ -54,6 +54,8 @@ export const LetterLoginContextProvider = ({ children }) => {
             // userId: state.userId,
             loading: state.loading,
             error: state.error,
+            unlockCount: state.unlockCount,
+            latestUnlockDate: state.latestUnlockDate,
             dispatch
         }}>
             {children}
