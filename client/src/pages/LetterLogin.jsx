@@ -29,8 +29,8 @@ const LetterLogin = () => {
       //console.log(res)
       navigate('/letter')
     } catch (error) {
-      setErrorMessage(error.response.data.message)
-      dispatch({ type: login_failure, payload: error.response.data })
+      setErrorMessage(error.response?.data.message)
+      dispatch({ type: login_failure, payload: error.response?.data })
     }
   }
 
@@ -58,6 +58,7 @@ const LetterLogin = () => {
             <span>2. The KEY is the time of the first message in our Instagram chat (please scroll to top to get the sending time of the first msg!)</span>
             <span>Based on Vancouver time(GMT-7)</span>
             <span>eg. 8:09 is 0809, 00:15 is 0015</span>
+            <span><a target='_blank' href='https://i.imgur.com/8EUwyJJ.jpeg'>example</a></span>
           </div>
         </div>
       </div>
