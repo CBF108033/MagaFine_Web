@@ -1,12 +1,9 @@
 .letterLogin {
     margin: auto;
     display: flex;
-    height: 100vh;
     background: var(--secondary-color);
-    ;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 
     input {
         height: 40px;
@@ -22,9 +19,8 @@
         /* align-items: flex-end; */
         /* justify-items: center; */
         width: fit-content;
-        padding: 3% 12% 3% 9%;
+        margin: 3% 12% 3% 9%;
         gap: 20px;
-        margin: 0;
 
         .title {
             text-align: center;
