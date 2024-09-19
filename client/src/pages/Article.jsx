@@ -5,97 +5,27 @@ import "react-quill/dist/quill.snow.css";
 import "../subComponents/scrollModel.css"
 import Footer from '../components/Footer'
 import { useLocation, useNavigate } from 'react-router-dom'
-import useFetch from '../hooks/useFetch'
-import axios from 'axios'
 import parse from 'html-react-parser'
 import { LoginContext } from '../context/LoginContext.js'
 import { OptionsContext } from '../context/OptionsContext'
-import { API_URL_AWS, new_Options } from '../constants/actionTypes'
-import { LABEL_CHINESE, LABEL_ENGLISH, LABEL_JAPANESE, LABEL_KOREAN, LABEL_ORIGINAL, LANG_EN, LANG_JP, LANG_KR, LANG_ZH } from '../constants/string.js';
+import { new_Options } from '../constants/actionTypes'
+import useArticleData from '../hooks/pages/useArticleData';
 
 const Article = () => {
   const locationArticleUrl = useLocation()
   const articleId = locationArticleUrl.pathname.split("/")[2]
-  // const { data, loading, error } = useFetch(`/articles/${articleId}`)
-  const [data, setData] = useState(null)//文章資料
-  const [articleLoading, setArticleLoading] = useState(true)//文章資料載入狀態
-  const [authData, setAuthData] = useState([])
-  const [isLike, setIsLike] = useState(false)
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   const [currentSectionId, setCurrentSectionId] = useState('s1'); // default to 's1' or any starting section id
   const [currentSectionIdIsChange, setCurrentSectionIdIsChange] = useState(true); // default to 's1' or any starting section id
   const [cssGalHeight, setCssGalHeight] = useState('auto'); // default height for CSSgal
   const [sectionHeights, setSectionHeights] = useState({});
   const { user } = useContext(LoginContext)
-  const isInitialMount = useRef(true);
   const sectionRefs = useRef({}); // store refs for each section
   // console.log(sectionRefs)]
   const navigate = useNavigate()
-  const sections = [];
-  let allData = {
-    parentData: "",
-    enData: "",
-    zhData: "",
-    krData: "",
-    jpData: ""
-  };
 
-  useEffect(() => {
-    async function fetchData() {
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-        // console.log('first render')
-        // 初次渲染時就抓取一次資料
-        let response = await axios.get(`${API_URL_AWS}/articles/${articleId}`)
-        setData(response.data)
-      } else {
-        // 根據特定條件重新渲染時才抓取資料
-        let response = await axios.get(`${API_URL_AWS}/articles/${articleId}`)
-        setData(response.data)
-      }
-    }
-    fetchData()
-  }, [isLike])
-
-  data?.forEach(e => {
-    if (e.parentId == null || e.parentId == "") {
-      allData.parentData = e;
-      sections.push({ id: 's1', label: LABEL_ORIGINAL, content: allData.parentData?.content || "" })
-    } else if (e.lang === LANG_EN) {
-      allData.enData = e;
-      sections.push({ id: 's2', label: LABEL_ENGLISH, content: allData.enData?.content || "" })
-    } else if (e.lang === LANG_ZH) {
-      allData.zhData = e;
-      sections.push({ id: 's5', label: LABEL_CHINESE, content: allData.zhData?.content || "" })
-    } else if (e.lang === LANG_KR) {
-      allData.krData = e;
-      sections.push({ id: 's3', label: LABEL_KOREAN, content: allData.krData?.content || "" })
-    } else if (e.lang === LANG_JP) {
-      allData.jpData = e;
-      sections.push({ id: 's4', label: LABEL_JAPANESE, content: allData.jpData?.content })
-    }
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const userData = await axios.get(`${API_URL_AWS}/users/find/${allData.parentData.AuthorId}`)
-      setAuthData(userData.data)
-    }
-    fetchData()
-  }, [data])
-
-  const likeBTClick = async () => {
-    if (!user) return alert('請先登入')
-    else {
-      try {
-        await axios.put(`${API_URL_AWS}/users/like/${user._id}/${articleId}`)
-      } catch (err) {
-        console.log(err)
-      }
-      setIsLike(!isLike)
-    }
-  }
-
+  // 使用自定義的 hook 來抓取資料
+  const { data, authData, isLike, likeBTClick, loading, error } = useArticleData(articleId);
   const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)
   const linkTo = (e) => {
     const hashtag = e.target.innerText.split('#')[1]
@@ -104,7 +34,7 @@ const Article = () => {
   }
 
   const handleUserClick = () => {
-    navigate(`/user/${allData.parentData.AuthorId}`)
+    navigate(`/user/${data.parentData.AuthorId}`)
   }
 
   //滑動到頁面頂部
@@ -182,6 +112,8 @@ const Article = () => {
     };
   }, [sectionHeights])
   */
+  // if (error)
+  //   return <div>Error: {error.message}</div>
 
   return (
     <>
@@ -190,13 +122,13 @@ const Article = () => {
         <div className="leftSide">
           <div className="container">
             <div className="likeBT" onClick={() => likeBTClick()}>
-              {//console.log(allData.parentData?.hearts)
-                allData.parentData?.hearts?.includes(user?._id) ? <img src="https://cdn-icons-png.flaticon.com/512/1550/1550594.png" alt="" />
-                  : <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
+              {//console.log(data.parentData?.hearts)
+                // data.parentData?.hearts?.includes(user?._id) ? <img src="https://cdn-icons-png.flaticon.com/512/1550/1550594.png" alt="" />
+                //   : <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
               }
-              {/* {!isLike ? <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
+              {!isLike ? <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
                 : <img src="https://cdn-icons-png.flaticon.com/512/1550/1550594.png" alt="" />
-              } */}
+              }
               <span>收藏</span>
             </div>
           </div>
@@ -204,26 +136,27 @@ const Article = () => {
         </div>
         <div className="mainContent">
           <div className="wrapper">
-            <div className="title">{allData.parentData?.title}</div>
+            <div className="title">{data?.parentData?.title}</div>
             <div className="subTitle">
-              <span className='subTitleName' onClick={handleUserClick}>{authData.userName}&nbsp;&nbsp;&nbsp;</span>
-              <span className='subTitleDate'>{allData.parentData?.createdAt?.slice(0, 10)}</span>
+              <span className='subTitleName' onClick={handleUserClick}>{authData?.userName}&nbsp;&nbsp;&nbsp;</span>
+              <span className='subTitleDate'>{data?.parentData?.createdAt?.slice(0, 10)}</span>
             </div>
 
-            {allData.parentData?.audioUrl !== "" &&
+            {data?.parentData?.audioUrl !== "" &&
               <div className="audio" style={{ position: 'relative' }}>
-                <audio controls style={{ width: '100%' }} src={allData.parentData?.audioUrl}></audio>
+                <audio controls style={{ width: '100%' }} src={data?.parentData?.audioUrl}></audio>
                 <a target='_blank' href='https://www.youtube.com/watch?v=lv5R6C3hz54' style={{ color: 'black', position: 'absolute', top: '-20px', right: '30px' }}>source</a>
               </div>
             }
 
-            {data?.length <= 1 ?
-              <div className="content ql-editor">{parse(allData.parentData?.content || "")}</div>
+            {!data || loading ? <div>Loading...</div> :
+             data?.sections.length <= 1 ?
+              <div className="content ql-editor">{parse(data.parentData?.content || "")}</div>
               :
               <div class="CSSgal" style={{ height: cssGalHeight }}>
 
                 <div class="bullets">
-                  {sections.map(section => (
+                  {data && data.sections.map(section => (
                     <a key={section.id} href={`#${section.id}`} onClick={() => handleClick(section.id)}
                       style={{
                         backgroundColor:
@@ -246,7 +179,7 @@ const Article = () => {
 
                 {/* Don't wrap targets in parent */}
 
-                {sections.map(section => (
+                {data.sections.map(section => (
                   <s key={section.id} id={section.id}></s>
                 ))}
                 {/* <s id="s1"></s>
@@ -256,28 +189,28 @@ const Article = () => {
                 <s id="s5"></s> */}
 
                 <div class="slider">
-                  {sections.map(section => (
+                  {data.sections.map(section => (
                     <div key={section.id} ref={(el) => (sectionRefs.current[section.id] = el)}>
                       <div className="content ql-editor">{parse(section.content)}</div>
                     </div>
                   ))}
-                  {/* <div><div className="content ql-editor">{parse(allData.parentData?.content || "")}</div></div>
-                  <div><div className="content ql-editor">{parse(allData.enData?.content || "")}</div></div>
-                  <div><div className="content ql-editor">{parse(allData.krData?.content || "")}</div></div>
-                  <div><div className="content ql-editor">{parse(allData.jpData?.content || "")}</div></div>
-                  <div><div className="content ql-editor">{parse(allData.zhData?.content || "")}</div></div> */}
+                  {/* <div><div className="content ql-editor">{parse(data.parentData?.content || "")}</div></div>
+                  <div><div className="content ql-editor">{parse(data.enData?.content || "")}</div></div>
+                  <div><div className="content ql-editor">{parse(data.krData?.content || "")}</div></div>
+                  <div><div className="content ql-editor">{parse(data.jpData?.content || "")}</div></div>
+                  <div><div className="content ql-editor">{parse(data.zhData?.content || "")}</div></div> */}
                 </div>
 
                 <div class="prevNext">
-                  {sections.map((section, index) => (
+                  {data.sections.map((section, index) => (
                     <div key={index}>
-                      <a href={`#${sections[(index - 1 + sections.length) % sections.length].id}`}
-                        onClick={() => handleClick(sections[(index - 1 + sections.length) % sections.length].id)}>
-                        {sections[(index - 1 + sections.length) % sections.length].label}
+                      <a href={`#${data.sections[(index - 1 + data.sections.length) % data.sections.length].id}`}
+                        onClick={() => handleClick(data.sections[(index - 1 + data.sections.length) % data.sections.length].id)}>
+                        {data.sections[(index - 1 + data.sections.length) % data.sections.length].label}
                       </a>
-                      <a href={`#${sections[(index + 1 + sections.length) % sections.length].id}`}
-                        onClick={() => handleClick(sections[(index + 1 + sections.length) % sections.length].id)}>
-                        {sections[(index + 1 + sections.length) % sections.length].label}
+                      <a href={`#${data.sections[(index + 1 + data.sections.length) % data.sections.length].id}`}
+                        onClick={() => handleClick(data.sections[(index + 1 + data.sections.length) % data.sections.length].id)}>
+                        {data.sections[(index + 1 + data.sections.length) % data.sections.length].label}
                       </a>
                     </div>
                   ))}
@@ -296,10 +229,10 @@ const Article = () => {
             <div className='articleInfo'>
               <div className="like">
                 <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="" />
-                {allData.parentData?.hearts?.length}
+                {data?.parentData?.hearts?.length}
               </div>
               <div className="articleLabels">
-                {allData.parentData?.length !== 0 && allData.parentData?.hashtags.map((hashtag, index) => {
+                {data?.parentData?.length !== 0 && data?.parentData?.hashtags.map((hashtag, index) => {
                   return (
                     <span key={index} onClick={linkTo}>#{hashtag}</span>
                   )
@@ -308,14 +241,14 @@ const Article = () => {
             </div>
             <div className="authInfo">
               <div className="left">
-                <div className='photo' style={{ backgroundImage: `url("` + (authData.photo === "" ? 'https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand' : authData.photo) + `")` }}></div>{/*'https://i.imgur.com/wcXhyMA.png'*/}
+                <div className='photo' style={{ backgroundImage: `url("` + (authData?.photo === "" ? 'https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand' : authData?.photo) + `")` }}></div>{/*'https://i.imgur.com/wcXhyMA.png'*/}
                 <div className='contact'>IG: giraffe_71_cy <br />FB: UNKNOW</div>
               </div>
               <div className="right">
-                <div className="name" onClick={handleUserClick}>{authData.userName}</div>
-                <div className="description">{authData.description}</div>
+                <div className="name" onClick={handleUserClick}>{authData?.userName}</div>
+                <div className="description">{authData?.description}</div>
                 <div className="selfLabel">
-                  {authData.length !== 0 && authData.personalizedHashtags.map((hashtag, index) => {
+                  {authData?.length !== 0 && authData?.personalizedHashtags.map((hashtag, index) => {
                     return (
                       <span key={index}>#{hashtag}</span>
                     )
