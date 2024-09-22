@@ -4,13 +4,11 @@ import EditorToolbar, { modules, formats } from "../subComponents/EditorToolbar"
 import "react-quill/dist/quill.snow.css";
 import "../subComponents/editorToolbar.scss"
 import "../subComponents/scrollModel.css"
-import useFetch from "../hooks/useFetch";
-import axios from "axios";
 import "./editArticle.scss"
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginContext } from "../context/LoginContext";
-import { API_URL_AWS } from "../constants/actionTypes";
-import { LABEL_CHINESE, LABEL_ENGLISH, LABEL_JAPANESE, LABEL_KOREAN, LABEL_ORIGINAL, LANG_EN, LANG_JP, LANG_KR, LANG_ZH } from "../constants/string";
+import { LANG_EN, LANG_JP, LANG_KR, LANG_ZH } from "../constants/string";
+import useEditArticleData from '../hooks/pages/useEditArticleData';
 // import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 export const Editor = () => {
@@ -23,173 +21,45 @@ export const Editor = () => {
     const locationAuthUrl = useLocation()
     const articleId = locationAuthUrl.pathname.split("/").pop()
     // console.log(articleId);
-    const { data, loading } = useFetch(API_URL_AWS + '/articles/' + articleId)
-    const sections = [];
-    const sectionRefs = useRef({}); // store refs for each section
-    let allData = {
-        parentData: "",
-        enData: "",
-        zhData: "",
-        krData: "",
-        jpData: ""
-    };
-    // console.log(data);
-    data.forEach(e => {
-        if (e.parentId == null || e.parentId == "") {
-            allData.parentData = e;
-        } else if (e.lang === LANG_EN) {
-            allData.enData = e;
-        } else if (e.lang === LANG_ZH) {
-            allData.zhData = e;
-        } else if (e.lang === LANG_KR) {
-            allData.krData = e;
-        } else if (e.lang === LANG_JP) {
-            allData.jpData = e;
-        }
-    });
-    sections.push({ id: 's1', label: LABEL_ORIGINAL, content: allData.parentData?.content || "" })
-    sections.push({ id: 's2', label: LABEL_ENGLISH, content: allData.enData?.content || "" })
-    sections.push({ id: 's3', label: LABEL_KOREAN, content: allData.krData?.content || "" })
-    sections.push({ id: 's4', label: LABEL_JAPANESE, content: allData.jpData?.content })
-    sections.push({ id: 's5', label: LABEL_CHINESE, content: allData.zhData?.content || "" })
-    // console.log(allData);
-
-    const { user, dispatch } = useContext(LoginContext);
-    // console.log(user);
-    let [state, setState] = useState({
-        title: "1",
-        content: null,
-        type: "1",
-        category: "1",
-        hashtags: [],
-        cover: null,
-        disploy: false
-    });
-    let [stateZH, setStateZH] = useState({
-        title: "1",
-        content: null,
-        type: "1",
-        category: "1",
-        hashtags: [],
-        cover: null,
-        disploy: false
-    });
-    let [stateEN, setStateEN] = useState({
-        title: "1",
-        content: null,
-        type: "1",
-        category: "1",
-        hashtags: [],
-        cover: null,
-        disploy: false
-    });
-    let [stateKR, setStateKR] = useState({
-        title: "1",
-        content: null,
-        type: "1",
-        category: "1",
-        hashtags: [],
-        cover: null,
-        disploy: false
-    });
-    let [stateJP, setStateJP] = useState({
-        title: "1",
-        content: null,
-        type: "1",
-        category: "1",
-        hashtags: [],
-        cover: null,
-        disploy: false
-    });
-    const [file, setFile] = useState()
-
-    // console.log(state);
-    useEffect(() => {//為什麼要用useEffect，因為data是非同步的，所以要等data有值才能setState，不然會出現data.title is undefined，
-        // console.log(allData);
-        setState((p) => ({ ...p, ['title']: allData.parentData.title, ['content']: allData.parentData.content, ['type']: allData.parentData.type, ['category']: allData.parentData.category, ['hashtags']: allData.parentData.hashtags, ['cover']: allData.parentData.cover }))
-        setStateZH((p) => ({ ...p, ['title']: allData.zhData.title, ['content']: allData.zhData.content, ['type']: allData.zhData.type, ['category']: allData.zhData.category, ['hashtags']: allData.zhData.hashtags, ['cover']: allData.zhData.cover }))
-        setStateEN((p) => ({ ...p, ['title']: allData.enData.title, ['content']: allData.enData.content, ['type']: allData.enData.type, ['category']: allData.enData.category, ['hashtags']: allData.enData.hashtags, ['cover']: allData.enData.cover }))
-        setStateKR((p) => ({ ...p, ['title']: allData.krData.title, ['content']: allData.krData.content, ['type']: allData.krData.type, ['category']: allData.krData.category, ['hashtags']: allData.krData.hashtags, ['cover']: allData.krData.cover }))
-        setStateJP((p) => ({ ...p, ['title']: allData.jpData.title, ['content']: allData.jpData.content, ['type']: allData.jpData.type, ['category']: allData.jpData.category, ['hashtags']: allData.jpData.hashtags, ['cover']: allData.jpData.cover }))
-    }, [data])
-
-
-    const [category, setCategory] = useState([])
-    const type = useRef(["專欄", "系列"])
     const isInitialMount = useRef(true)
     const typeSelector = useRef(null)
     const coverUpload = useRef(null)
+    const sectionRefs = useRef({}); // store refs for each section
+    const type = useRef(["專欄", "系列"])
+
+    const { user, dispatch } = useContext(LoginContext);
+    const { data, category, loading, articleStates, saveProcess, setCatagoryField, updateArticleData, isValidHashtag } = useEditArticleData(articleId)
+
+    useEffect(() => {//為什麼要用useEffect，因為data是非同步的，所以要等data有值才能setState，不然會出現data.title is undefined，
+        // console.log(data);
+        updateArticleData(data);
+    }, [data])
 
     useEffect(() => { //設定初始化的category，isInitialMount.current = true，第一次渲染時執行
-        const fetchData = async () => {
-            const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all")
-            let category = await Promise.all(res.data.column.map(i => i.category))
-            if (allData.parentData.type === "專欄") {
-                category = await Promise.all(res.data.column.map(i => i.category))
-                // console.log(category);
-            } else if (allData.parentData.type === "系列") {
-                category = await Promise.all(res.data.series.map(i => i.category))
-                // console.log(category);
+        if (data) {
+            typeSelector.current.value = data.parentData?.type; //設定初始化的type
+            coverUpload.current.value = data.parentData?.cover;
+            if (data.parentData !== '' && isInitialMount.current) {
+                isInitialMount.current = false;
+                setCatagoryField(data.parentData?.type)
             }
-            setCategory(category)
-        }
-        typeSelector.current.value = allData.parentData.type; //設定初始化的type
-        coverUpload.current.value = allData.parentData.cover;
-        if (allData.parentData.length !== 0 && isInitialMount.current) {
-            isInitialMount.current = false;
-            fetchData()
         }
     }, [data])
+
     const selectorChange = async (e) => { //選擇專欄或系列時，category會跟著改變，並且預設第一個category
         typeSelector.current.value = e.target.value;
-        // const cur = e.target.value;//cur是選擇的專欄或系列，直接用e.target.value會有bug，所以先存成cur，因為底下value會吃到還沒改變的e.target.value，導致type還是原本的值
-        const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all")
-        let category;
-        if (e.target.value === "系列") {
-            category = await Promise.all(res.data.series.map(i => i.category))
-            console.log(1, category);
-        } else if (e.target.value === "專欄") {
-            category = await Promise.all(res.data.column.map(i => i.category))
-            console.log(2, category);
-        }
-        setCategory(category)
-        setState((p) => ({ ...p, ['type']: e.target.value, ['category']: category[0] }));
-        setStateZH((p) => ({ ...p, ['type']: e.target.value, ['category']: category[0] }));
-        setStateEN((p) => ({ ...p, ['type']: e.target.value, ['category']: category[0] }));
-        setStateKR((p) => ({ ...p, ['type']: e.target.value, ['category']: category[0] }));
-        setStateJP((p) => ({ ...p, ['type']: e.target.value, ['category']: category[0] }));
-    }
-    const categorySelectorChange = (e) => { //選擇category時，category會跟著改變
-        setState((p) => ({ ...p, ['category']: e.target.value }));
-        setStateZH((p) => ({ ...p, ['category']: e.target.value }));
-        setStateEN((p) => ({ ...p, ['category']: e.target.value }));
-        setStateKR((p) => ({ ...p, ['category']: e.target.value }));
-        setStateJP((p) => ({ ...p, ['category']: e.target.value }));
+        const curType = e.target.value;//cur是選擇的專欄或系列，直接用e.target.value會有bug，所以先存成cur，因為底下value會吃到還沒改變的e.target.value，導致type還是原本的值
+        setCatagoryField(curType)
+        updateArticleData({ type: curType, category: category[0] });
     }
 
-    const handleChange = (value, id) => {
-        // console.log(value);
-        // console.log(id);
-        if (id === 'parent') {
-            setState((p) => ({ ...p, ['content']: value }));
-        } else if (id === 'zh') {
-            setStateZH((p) => ({ ...p, ['content']: value }));
-        } else if (id === 'en') {
-            setStateEN((p) => ({ ...p, ['content']: value }));
-        } else if (id === 'kr') {
-            setStateKR((p) => ({ ...p, ['content']: value }));
-        } else if (id === 'jp') {
-            setStateJP((p) => ({ ...p, ['content']: value }));
-        }
-    };
+    const categorySelectorChange = (e) => { //選擇category時，category會跟著改變
+        updateArticleData({ category: e.target.value });
+    }
 
     const newHandleChange = (id) => (value) => {
-        handleChange(value, id);
+        updateArticleData({ content: value }, id)
     };
-
-    // useEffect(() => {
-    //     setState((p) => ({ ...p, ['content']: allData.parentData.content, ['title']: allData.parentData.title }));
-    // }, [allData.parentData.content]);
 
     const back = () => {
         const confirmBox = window.confirm(
@@ -202,48 +72,20 @@ export const Editor = () => {
         }
     }
     const save = async (disploy) => {
-        state = { ...state, ['disploy']: disploy }
+        updateArticleData({ disploy: disploy }, 'parentData');
         // 替換空格為特殊符號，要四格空白才能換行
-        state.content = state.content.replace(/\s{8}|\t\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-        state.content = state.content.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
-        if (state.title === "") {
+        updateArticleData({ content: articleStates.parentData.content.replace(/\s{8}|\t\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') }, 'parentData');
+        updateArticleData({ content: articleStates.parentData.content.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;') }, 'parentData');
+        if (articleStates.parentData.title === "") {
             alert("標題不得為空")
             return
-        } else if (state.content === "") {
+        } else if (articleStates.parentData.content === "") {
             alert("內容不得為空")
             return
         }
-        try {
-            // console.log(stateEN.content, allData.enData._id);
-            if (state.content && state.content.length > 0) {
-                const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + articleId, state)
-            }
-            if (stateZH.content && stateZH.content.length > 0) {
-                const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + allData.zhData._id, stateZH)
-            }
-            if (stateEN.content && stateEN.content.length > 0) {
-                const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + allData.enData._id, stateEN)
-            }
-            if (stateKR.content && stateKR.content.length > 0) {
-                const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + allData.krData._id, stateKR)
-            }
-            if (stateJP.content && stateJP.content.length > 0) {
-                const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + allData.jpData._id, stateJP)
-            }
-            // const res = await axios.put(API_URL_AWS + "/articles/" + user._id + "/" + articleId, state)
-            // navigate("/user/" + user._id + "/home")
-            alert("儲存成功!")
-            refreshPage()
-        } catch (error) {
-            // alert(error.response.data.message)
-            console.log(error);
-            alert("請重新登入")
-        }
+        saveProcess(articleStates)
     }
 
-    const refreshPage = () => {
-        window.location.reload();
-    }
     /** TODO 自動儲存功能(10/28未完成) */
     // setInterval(async () => {
     //     state = { ...state, ['disploy']: false }
@@ -272,40 +114,29 @@ export const Editor = () => {
         e.stopPropagation();
         if (e.key === 'Enter') {
             // console.log(e.target.value);
-            var res = e.target.value.replace(/(\r\n|\n|\r|\s)/gm, "");
-            if (res === "") {
-                alert("輸入不得為空")
+            var replacedTag = e.target.value.replace(/(\r\n|\n|\r|\s)/gm, "");
+            const status = isValidHashtag(e, replacedTag)
+            if (status.res) {
+                updateArticleData({ hashtags: [...articleStates.parentData.hashtags, replacedTag] }, 'parentData');
                 e.target.value = "";
-                return
-            } else if (res.length > 10) {
-                alert("hashtag字數不得超過10字")
-                return
-            } else if (res.includes("#")) {
-                alert("hashtag不得包含#")
-                return
             } else {
-                if (res != "" && !state.hashtags.includes(res)) {
-                    await setState((p) => ({ ...p, ['hashtags']: [...p.hashtags, res] }));
-                    e.target.value = "";
-                } else {
-                    alert("hashtag不得重複")
-                    e.target.value = "";
-                    return
-                }
+                alert(status.error)
             }
         }
     }
+
     const removeHashtag = (e) => {
         // console.log(e.target.parentNode.innerText.split("#")[1]);
-        const index = state.hashtags.indexOf(e.target.parentNode.innerText.split("#")[1])
+        const index = articleStates.parentData.hashtags.indexOf(e.target.parentNode.innerText.split("#")[1])
         // console.log(index);
         if (index > -1) {
-            setState((p) => ({ ...p, ['hashtags']: p.hashtags.filter((item) => item !== e.target.parentNode.innerText.split("#")[1]) }));
+            updateArticleData({ hashtags: articleStates.parentData.hashtags.filter((item) => item !== e.target.parentNode.innerText.split("#")[1]) }, 'parentData');
         }
     }
+    
     const handleInputPhotos = (e) => {
         coverUpload.current.value = e.target.value;
-        setState((p) => ({ ...p, ['cover']: e.target.value }));
+        updateArticleData({ cover: e.target.value }, 'parentData');
     }
 
     //滑動到頁面頂部
@@ -387,9 +218,9 @@ export const Editor = () => {
                     <div className="selector">
                         <div className="SelectTitle">種類</div>
                         <div className="select-wrap">
-                            <select name="category" id="categorySelectorOption" onChange={e => categorySelectorChange(e)} value={state?.category}>
+                            <select name="category" id="categorySelectorOption" onChange={e => categorySelectorChange(e)} value={articleStates.parentData?.category}>
                                 {
-                                    category.map((item, index) => {
+                                    category?.map((item, index) => {
                                         return <option value={item} key={index}>{item}</option>
                                     })
                                 }
@@ -407,14 +238,14 @@ export const Editor = () => {
                             <div className="topic">
                                 <div className="background-gray">
                                     <span>標題</span>
-                                    <input type="text" value={state?.title} placeholder="請輸入標題... " onChange={(e) => setState((p) => ({ ...p, ['title']: e.target.value }))} />
+                                    <input type="text" value={articleStates.parentData?.title} placeholder="請輸入標題... " onChange={(e) => updateArticleData({ title: e.target.value }, 'parentData') } />
                                 </div>
                             </div>
 
                             <div class="CSSgal" style={{ height: cssGalHeight }}>
 
                                 {/* Don't wrap targets in parent */}
-                                {sections.map(section => (
+                                {data?.sections.map(section => (
                                     <s key={section.id} id={section.id}></s>
                                 ))}
                                 {/* <s id="s1"></s>
@@ -424,7 +255,7 @@ export const Editor = () => {
                                 <s id="s5"></s> */}
 
                                 <div class="bullets">
-                                    {sections.map(section => (
+                                    {data?.sections.map(section => (
                                         <a key={section.id} href={`#${section.id}`} onClick={() => handleClick(section.id)}
                                             style={{
                                                 backgroundColor:
@@ -450,8 +281,8 @@ export const Editor = () => {
                                         <EditorToolbar />
                                         <ReactQuill
                                             theme="snow"
-                                            value={state?.content}
-                                            onChange={newHandleChange('parent')}
+                                            value={articleStates.parentData?.content}
+                                            onChange={newHandleChange('parentData')}
                                             placeholder={"Write something awesome..."}
                                             modules={modules}
                                             formats={formats}
@@ -461,8 +292,8 @@ export const Editor = () => {
                                     <div>
                                         <ReactQuill
                                             theme="snow"
-                                            value={stateEN?.content}
-                                            onChange={newHandleChange(LANG_EN)}
+                                            value={articleStates.enData?.content}
+                                            onChange={newHandleChange(LANG_EN + 'Data')}
                                             placeholder={"Write something awesome..."}
                                             // modules={modules}
                                             // formats={formats}
@@ -472,8 +303,8 @@ export const Editor = () => {
                                     <div>
                                         <ReactQuill
                                             theme="snow"
-                                            value={stateKR?.content}
-                                            onChange={newHandleChange(LANG_KR)}
+                                            value={articleStates.krData?.content}
+                                            onChange={newHandleChange(LANG_KR + 'Data')}
                                             placeholder={"Write something awesome..."}
                                             // modules={modules}
                                             // formats={formats}
@@ -483,8 +314,8 @@ export const Editor = () => {
                                     <div>
                                         <ReactQuill
                                             theme="snow"
-                                            value={stateJP?.content}
-                                            onChange={newHandleChange(LANG_JP)}
+                                            value={articleStates.jpData?.content}
+                                            onChange={newHandleChange(LANG_JP + 'Data')}
                                             placeholder={"Write something awesome..."}
                                             // modules={modules}
                                             // formats={formats}
@@ -494,8 +325,8 @@ export const Editor = () => {
                                     <div>
                                         <ReactQuill
                                             theme="snow"
-                                            value={stateZH?.content}
-                                            onChange={newHandleChange(LANG_ZH)}
+                                            value={articleStates.zhData?.content}
+                                            onChange={newHandleChange(LANG_ZH + 'Data')}
                                             placeholder={"Write something awesome..."}
                                             // modules={modules}
                                             // formats={formats}
@@ -505,15 +336,15 @@ export const Editor = () => {
                                 </div>
 
                                 <div class="prevNext">
-                                    {sections.map((section, index) => (
+                                    {data?.sections.map((section, index) => (
                                         <div key={index}>
-                                            <a href={`#${sections[(index - 1 + sections.length) % sections.length].id}`}
-                                                onClick={() => handleClick(sections[(index - 1 + sections.length) % sections.length].id)}>
-                                                {sections[(index - 1 + sections.length) % sections.length].label}
+                                            <a href={`#${data?.sections[(index - 1 + data?.sections.length) % data?.sections.length].id}`}
+                                                onClick={() => handleClick(data?.sections[(index - 1 + data?.sections.length) % data?.sections.length].id)}>
+                                                {data?.sections[(index - 1 + data?.sections.length) % data?.sections.length].label}
                                             </a>
-                                            <a href={`#${sections[(index + 1 + sections.length) % sections.length].id}`}
-                                                onClick={() => handleClick(sections[(index + 1 + sections.length) % sections.length].id)}>
-                                                {sections[(index + 1 + sections.length) % sections.length].label}
+                                            <a href={`#${data?.sections[(index + 1 + data?.sections.length) % data?.sections.length].id}`}
+                                                onClick={() => handleClick(data?.sections[(index + 1 + data?.sections.length) % data?.sections.length].id)}>
+                                                {data?.sections[(index + 1 + data?.sections.length) % data?.sections.length].label}
                                             </a>
                                         </div>
                                     ))}
@@ -531,7 +362,7 @@ export const Editor = () => {
                                 <span>標籤</span>
                                 <div className="wrapper">
                                     {
-                                        state.hashtags && state.hashtags.length !== 0 && state.hashtags.map((item, index) => {
+                                        articleStates.parentData.hashtags && articleStates.parentData.hashtags.length !== 0 && articleStates.parentData.hashtags.map((item, index) => {
                                             return (
                                                 <div className='hashTag' id="hashTag1" key={index}> #{item}<i className="fa-solid fa-xmark" onClick={removeHashtag}></i></div>
                                             )
@@ -549,7 +380,7 @@ export const Editor = () => {
                         <span>封面圖片上傳</span>
                         <input type="text" id='photo' onChange={e => handleInputPhotos(e)} ref={coverUpload} />
                     </div>
-                    <img src={state?.cover || allData.parentData.cover} alt="封面圖片" />
+                    <img src={articleStates.parentData?.cover || data?.parentData.cover} alt="封面圖片" />
                 </div>
             </main>
         </div>
