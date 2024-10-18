@@ -3,7 +3,7 @@ a blogger with fashion magazine style website.
 
 【MagaFine】定位為時尚雜誌風格的網頁，具備文章搜尋、標籤查詢、使用者註冊登入、文章按讚功能。
 ## 技術
-以React框架及SCSS製作網頁主體，採用RWD支援手機、電腦版使用者，後臺資料使用MongoDB進行管理，API採用RESTful API風格，制定符合CRUD功能的API。
+以React + Node.js及SCSS和JS製作網頁主體，採用RWD支援手機、電腦版使用者，後臺資料使用MongoDB進行管理，API採用RESTful API風格，制定符合CRUD功能的API。
 - ### React
   是一種javaScript函式庫，使用JSX（JavaScript和XML）的HTML-in-JavaScript語法，使得撰寫者可以更直觀的方式理解整個程式碼的運作方式，並有效提高撰寫效率。
 - ### SCSS
