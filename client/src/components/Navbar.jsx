@@ -8,6 +8,7 @@ import { OptionsContext } from '../context/OptionsContext'
 // import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 // import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/joy/Tooltip';
+import axios from 'axios';
 
 const Navbar = () => {
     const [height, setHeight] = useState(50)
@@ -16,11 +17,22 @@ const Navbar = () => {
     const navigate = useNavigate()
     const [showTooltip, setShowTooltip] = useState(false);
     const [isNavbarHidden, setIsNavbarHidden] = useState(false);
+    const [columnSeriessLst, setColumnsSeriesLst] = useState([]);
 
-    //當畫面縮放時自動調整items(下拉式清單的top位置) 參考:https://ithelp.ithome.com.tw/articles/10225184
+    /**
+     * 取得所有專欄、系列名稱
+     */
+    const getColumnsSeriesLst = async () => {
+        const res = await axios.get(API_URL_AWS + "/articles/allArticlesType/all");
+        setColumnsSeriesLst(res.data);
+    }
+
     useEffect(() => {
+        //當畫面縮放時自動調整items(下拉式清單的top位置) 參考:https://ithelp.ithome.com.tw/articles/10225184
         let height = ref.current.getBoundingClientRect().height
         window.addEventListener('resize', () => setHeight(height));
+        //取得專欄和系列清單
+        getColumnsSeriesLst();
         return (() => {
             window.removeEventListener('resize', () => setHeight(height));
         })
@@ -111,11 +123,17 @@ const Navbar = () => {
                         <p>專欄</p><img src="https://cdn-icons-png.flaticon.com/512/9497/9497400.png" alt="" />
                         <div className="items" style={{ top: +`${height - 1}` + 'px' }}>
                             <ul>
-                                <li onClick={e => linkTo(e, '生活')}>生活</li>
+                                {
+                                    columnSeriessLst?.column &&
+                                    Array.from(columnSeriessLst.column).map(element => {
+                                        return <li onClick={e => linkTo(e, element.category)}>{element.category}</li>
+                                    })
+                                }
+                                {/* <li onClick={e => linkTo(e, '生活')}>生活</li>
                                 <li onClick={e => linkTo(e, '美食')}>美食</li>
                                 <li onClick={e => linkTo(e, '電影')}>電影</li>
                                 <li onClick={e => linkTo(e, '旅遊')}>旅遊</li>
-                                <li onClick={e => linkTo(e, '開箱')}>開箱</li>
+                                <li onClick={e => linkTo(e, '開箱')}>開箱</li> */}
                             </ul>
                         </div>
                     </div>
@@ -123,8 +141,14 @@ const Navbar = () => {
                         <p>系列</p><img src="https://cdn-icons-png.flaticon.com/512/9497/9497400.png" alt="down" />
                         <div className="items" style={{ top: +`${height - 1}` + 'px' }}>
                             <ul>
-                                <li onClick={e => linkTo(e, '疑難雜症')}>疑難雜症</li>
-                                <li onClick={e => linkTo(e, '作品集')}>作品集</li>
+                                {
+                                    columnSeriessLst.series &&
+                                    Array.from(columnSeriessLst.series).map(element => {
+                                        return <li onClick={e => linkTo(e, element.category)}>{element.category}</li>
+                                    })
+                                }
+                                {/* <li onClick={e => linkTo(e, '疑難雜症')}>疑難雜症</li>
+                                <li onClick={e => linkTo(e, '作品集')}>作品集</li> */}
                             </ul>
                         </div>
                     </div>
