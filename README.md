@@ -21,10 +21,16 @@ a blogger with fashion magazine style website.
 | 首頁 | 載入畫面 | 搜尋框 |
 | <img src="./images/導航列下拉式選單.png" width=100%> |  <img src="./images/文章頁面.png" width=100%> | <img src="./images/作者頁面.png" width=100%> |
 | 下拉式選單 | 文章頁面 | 作者頁面 |
-| <img src="./images/登入畫面.PNG" width=100%> |  <img src="./images/註冊畫面.PNG" width=100%> |  |
-| 登入畫面 | 註冊畫面 |  |
+| <img src="./images/登入畫面.PNG" width=100%> |  <img src="./images/註冊畫面.PNG" width=100%> |  <img src="./images/文章編輯頁面.png" width=100%> |
+| 登入畫面 | 註冊畫面 | 文章編輯頁面 |
+
+## 資料表設計
+使用[DMBL](https://www.dbml.org/docs)設計資料表結構 Use DBML to define my database structure</br></br>
+<img src="https://github.com/user-attachments/assets/b639e7bc-16c6-429d-ab89-6263b86683c1" style="height:200px;">
+
 
 ## 參考資源
 - [iThome【自己做一個價值幾十萬的動態網站，學會Mern開發、前台UI設計各式觀念與各式Lib、typescript你該學會的前端技術】系列](https://ithelp.ithome.com.tw/users/20150652/ironman/5050)
 - [A day Magazine](https://www.adaymag.com/tw)
 - [LA Weekly Asia](https://laweekly.asia/zh/)
+- [DMBL](https://www.dbml.org/docs)
