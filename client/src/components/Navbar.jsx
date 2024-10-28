@@ -15,7 +15,9 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
     const ref = useRef(null)
     const navigate = useNavigate()
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltipInstagram, setShowTooltipInstagram] = useState(false);
+    const [showTooltipFacebook, setShowTooltipFacebook] = useState(false);
+    const [showTooltipYoutube, setShowTooltipYoutube] = useState(false);
     const [isNavbarHidden, setIsNavbarHidden] = useState(false);
     const [columnSeriessLst, setColumnsSeriesLst] = useState([]);
 
@@ -177,15 +179,15 @@ const Navbar = () => {
                     }
                     {/* </div>
                     </Tooltip> */}
-                    <Link to="https://instagram.com/giraffe_71_cy?igshid=ZGUzMzM3NWJiOQ==">
+                    <Tooltip title="暫無開放">
                         <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
-                    </Link>
-                    {/* <Tooltip title="暫無開放"> */}
-                    <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
-                    {/* </Tooltip> */}
-                    {/* <Tooltip title="暫無開放"> */}
-                    <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
-                    {/* </Tooltip> */}
+                    </Tooltip>
+                    <Tooltip title="暫無開放">
+                        <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
+                    </Tooltip>
+                    <Tooltip title="暫無開放">
+                        <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
+                    </Tooltip>
                 </div>
                 {/* 手機板 */}
                 <button className="navbar-toggle mobile" onClick={toggleNavbar}>
@@ -203,29 +205,38 @@ const Navbar = () => {
                             </div>
 
                             <div className="contactListMobile">
-                                <Link to="https://instagram.com/giraffe_71_cy?igshid=ZGUzMzM3NWJiOQ==">
-                                    <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
-                                </Link>
-                                {/* <Tooltip
+                                <Tooltip
                                     title="尚未啟用" arrow size="md" color="danger" variant="solid"
-                                    open={showTooltip}
-                                    onOpen={() => setShowTooltip(true)}
-                                    onClose={() => setShowTooltip(false)}
+                                    open={showTooltipInstagram}
+                                    onOpen={() => setShowTooltipInstagram(true)}
+                                    onClose={() => setShowTooltipInstagram(false)}
                                 >
-                                    <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
-                                <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
-                                {/* </div>
-                                </Tooltip> */}
-                                {/* <Tooltip
+                                    <div className='notAllowed' onClick={() => setShowTooltipInstagram(!showTooltipFacebook)}>
+                                        <img className='instagramIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" alt="" />
+                                    </div>
+                                </Tooltip>
+
+                                <Tooltip
                                     title="尚未啟用" arrow size="md" color="danger" variant="solid"
-                                    open={showTooltip}
-                                    onOpen={() => setShowTooltip(true)}
-                                    onClose={() => setShowTooltip(false)}
+                                    open={showTooltipFacebook}
+                                    onOpen={() => setShowTooltipFacebook(true)}
+                                    onClose={() => setShowTooltipFacebook(false)}
                                 >
-                                    <div className='notAllowed' onClick={() => setShowTooltip(!showTooltip)}> */}
-                                <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
-                                {/* </div>
-                                </Tooltip> */}
+                                    <div className='notAllowed' onClick={() => setShowTooltipFacebook(!showTooltipFacebook)}>
+                                        <img className='facebookIcon' src="https://cdn-icons-png.flaticon.com/512/3128/3128208.png" alt="" />
+                                    </div>
+                                </Tooltip>
+
+                                <Tooltip
+                                    title="尚未啟用" arrow size="md" color="danger" variant="solid"
+                                    open={showTooltipYoutube}
+                                    onOpen={() => setShowTooltipYoutube(true)}
+                                    onClose={() => setShowTooltipYoutube(false)}
+                                >
+                                    <div className='notAllowed' onClick={() => setShowTooltipYoutube(!showTooltipYoutube)}>
+                                        <img className='youtubeIcon' src="https://cdn-icons-png.flaticon.com/512/1384/1384028.png" alt="" />
+                                    </div>
+                                </Tooltip>
                             </div>
                             {/* <Tooltip
                                 title="尚未啟用" arrow size="md" color="danger" variant="solid"
