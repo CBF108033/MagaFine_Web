@@ -102,6 +102,24 @@ export const getMyselfArticles = async (req, res, next) => {
     }
 }
 
+export const getPrevNextArticles = async (req, res, next) => {
+    const getArticleID = req.params.id;
+    try {
+        const articleData = await Article.findById(getArticleID);
+        const prevArticleData = await Article.findOne({ createdAt: { $lt: articleData.createdAt }, disploy: true, readAccess: "", category: articleData.category }).sort({ createdAt: -1}).select('_id title');
+        const nextArticleData = await Article.findOne({ createdAt: { $gt: articleData.createdAt }, disploy: true, readAccess: "", category: articleData.category }).sort({ createdAt: 1 }).select('_id title');
+
+        const prevNextArticleList = {
+            prevArticle: prevArticleData || null,
+            nextArticle: nextArticleData || null
+        }
+
+        res.status(200).json(prevNextArticleList);
+    } catch (error) {
+        next(errorMessage(500, "找不到其他篇文章", error))
+    }
+}
+
 export const updatedArticle = async (req, res, next) => {
     try {
         const updateArticle = await Article.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });

@@ -142,6 +142,46 @@
                     flex-wrap: wrap;
                     gap: 25px;
                 }
+                
+                /*上下篇文章設定*/
+                .prevNextBT {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 50px;
+                    width: 100%;
+                
+                    #prevBT,
+                    #nextBT {
+                        display: flex;
+                        align-items: center;
+                        width: 35%;
+                        font-size: 1.5em;
+                        border-radius: 5px;
+                        padding: 3px 10px;
+                        color: var(--secondary-button-color);
+                        transition: .2s;
+                
+                        a {
+                            display: block;
+                            color: var(--secondary-button-color);
+                            text-decoration: none;
+                            white-space: nowrap;
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            line-height: 2.5em;
+                        }
+                    }
+                
+                    #prevBT:hover,
+                    #nextBT:hover {                
+                        a,
+                        .material-symbols-outlined {
+                            color: var(--hover-color);
+                        }
+                    }
+                }
             }
 
             .authInfo {
@@ -261,6 +301,10 @@
         }
 
     }
+    /*箭頭設定*/
+    .material-symbols-outlined {
+        color: var(--secondary-button-color);
+    }
 }
 
 @media screen and (max-width:600px) {
@@ -290,6 +334,18 @@
 
             .subTitle {
                 margin: 0 5% 20px 5%;
+            }
+
+            .articleInfo {
+                /*上下篇文章設定*/
+                .prevNextBT {
+                    flex-wrap: wrap;
+
+                    #prevBT,
+                    #nextBT {
+                        width: 100%;
+                    }
+                }
             }
         }
 

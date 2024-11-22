@@ -25,7 +25,7 @@ const Article = () => {
   const navigate = useNavigate()
 
   // 使用自定義的 hook 來抓取資料
-  const { data, authData, isLike, likeBTClick, loading, error } = useArticleData(articleId);
+  const { data, prevNextArticleData, authData, isLike, likeBTClick, loading, error } = useArticleData(articleId);
   const { searchText, hashtag, type, category, dispatch } = useContext(OptionsContext)
   const linkTo = (e) => {
     const hashtag = e.target.innerText.split('#')[1]
@@ -238,7 +238,30 @@ const Article = () => {
                   )
                 })}
               </div>
+              {/* 上下篇文章 */}
+              {!data || loading ? "" :
+                <div className="prevNextBT">
+                  {prevNextArticleData?.prevArticle === null ? <div id='prevBT'></div>
+                    : <div id='prevBT'>
+                      <span class="material-symbols-outlined">
+                        arrow_back_ios_new
+                      </span>
+                      <a href={`/article/${prevNextArticleData?.prevArticle._id}`}>{prevNextArticleData?.prevArticle.title}</a>
+                    </div>
+                  }
+                  {prevNextArticleData?.nextArticle === null ? <div id='nextBT'></div>
+                    : <div id='nextBT'>
+                      <a href={`/article/${prevNextArticleData?.nextArticle._id}`}>{prevNextArticleData?.nextArticle.title}</a>
+                      <span class="material-symbols-outlined">
+                        arrow_forward_ios
+                      </span>
+                    </div>
+                  }
+                </div>
+              }
+
             </div>
+            
             <div className="authInfo">
               <div className="left">
                 <div className='photo' style={{ backgroundImage: `url("` + (authData?.photo === "" ? 'https://i.imgur.com/QzIXtAa_d.webp?maxwidth=760&fidelity=grand' : authData?.photo) + `")` }}></div>{/*'https://i.imgur.com/wcXhyMA.png'*/}

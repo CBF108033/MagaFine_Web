@@ -7,6 +7,7 @@ import { LoginContext } from '../../context/LoginContext.js';
 
 const useArticleData = (articleId) => {
     const [data, setData] = useState(null); // 文章資料
+    const [prevNextArticleData, setPrevNextArticleData] = useState(null); // 前後篇文章資料
     const [authData, setAuthData] = useState(null); // 作者資料
     const [isLike, setIsLike] = useState(false); // 是否喜歡
     const [loading, setLoading] = useState(true); // 加載狀態
@@ -14,6 +15,9 @@ const useArticleData = (articleId) => {
     const { user } = useContext(LoginContext)
 
     useEffect(() => {
+        /**
+         * 抓取文章資料
+         */
         async function fetchArticleData() {
             setLoading(true);
             try {
@@ -29,7 +33,19 @@ const useArticleData = (articleId) => {
                 setLoading(false);
             }
         }
+        /**
+         * 抓取前篇後篇文章資料
+         */
+        async function fetchPrevNextArticle() {
+            try {
+                const response = await axios.get(`${API_URL_AWS}/articles/${articleId}/prev-next`);
+                setPrevNextArticleData(response.data);
+            } catch (error) {
+                setError(error);
+            }
+        }
         fetchArticleData()
+        fetchPrevNextArticle()
         // setData(data?.parentData?.hearts?.includes(user?._id));
     }, [articleId]);
 
@@ -109,7 +125,7 @@ const useArticleData = (articleId) => {
     };
 
 
-    return { data, authData, isLike, likeBTClick, loading, error };
+    return { data, prevNextArticleData, authData, isLike, likeBTClick, loading, error };
 }
 
 export default useArticleData
