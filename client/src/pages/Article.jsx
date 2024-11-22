@@ -80,6 +80,7 @@ const Article = () => {
       }
     });
     setSectionHeights(heights);
+    setCurrentSectionIdIsChange(!currentSectionIdIsChange);
   }, [data]);
 
   // 當resize時，重新計算section的高度，並更新CSSgal的高度，但會造成無限迴圈，導致網頁當機
